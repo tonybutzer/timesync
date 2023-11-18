@@ -1,4 +1,22 @@
 # Things I think we can remove
+def retry(retries: int, jitter: Tuple[int, int] = (1, 15)) -> Callable:
+    """
+    Simple retry decorator, for retrying any function that may throw an exception
+    such as when trying to retrieve network resources
+    """
+    def retry_dec(func: Callable) -> Callable:
+        def wrapper(*args, **kwargs):
+            count = 1
+            while True:
+                try:
+                    return func(*args, **kwargs)
+                except Exception:
+                    count += 1
+                    if count > retries:
+                        raise
+                    time.sleep(random.randint(*jitter))
+        return wrapper
+    return retry_dec
 
 def local_setup(*args) -> dict:
     """

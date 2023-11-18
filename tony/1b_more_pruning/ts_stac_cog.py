@@ -2,15 +2,6 @@ from dataclasses import dataclass
 from datetime import datetime as dt
 
 
-@dataclass(frozen=True)
-class Bounds:
-    """
-    Class to hold spatial coordinate bounds
-    """
-    min_x: float
-    max_x: float
-    min_y: float
-    max_y: float
 
 
 class StacRecord:
