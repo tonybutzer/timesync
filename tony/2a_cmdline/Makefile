@@ -1,0 +1,8 @@
+cat:
+	cat Makefile
+
+test:
+	python3 ts_user.py --plot_id 2 --x -530580 --y 1318380  3132
+
+test1:
+	python3 ts_user.py --year 1990 --plot_id 1 --x -530580 --y 1318380  3132
