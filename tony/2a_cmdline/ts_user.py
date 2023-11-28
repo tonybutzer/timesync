@@ -39,7 +39,5 @@ def command_line_runner():
 
 
 if __name__ == '__main__':
-    #_mkdir('log')
-    #log = log_init('ET_MOSAIC', 'DEBUG')
 
     command_line_runner()
