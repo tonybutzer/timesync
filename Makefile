@@ -10,3 +10,9 @@ publish:
 
 
 git: publish
+
+
+big:
+	du -a . | sort -n -r | head -n 10
+	echo HI
+	find . -size +10M

@@ -1,0 +1,609 @@
+                                              Memory usage: ▅█▅▅▇▄▇▆▃▃▆▅▁▁▁▁▁▁▄▁▄▁▁▁▁▁▁ (max: 126.680 MB, growth rate:   0%)                                               
+                            /home/ec2-user/opt/timesync/tony/2a_cmdline/ts_process_group.py: % of time =  96.53% (4m:51.772s) out of 4m:0.106s.                            
+       ╷       ╷       ╷       ╷        ╷       ╷               ╷       ╷                                                                                                  
+       │Time   │–––––– │–––––– │Memory  │–––––– │–––––––––––    │Copy   │                                                                                                  
+  Line │Python │native │system │Python  │peak   │timeline/%     │(MB/s) │/home/ec2-user/opt/timesync/tony/2a_cmdline/ts_process_group.py                                   
+╺━━━━━━┿━━━━━━━┿━━━━━━━┿━━━━━━━┿━━━━━━━━┿━━━━━━━┿━━━━━━━━━━━━━━━┿━━━━━━━┿━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸
+     1 │       │       │       │        │       │               │       │import os                                                                                         
+     2 │       │       │       │        │       │               │       │import numpy as np                                                                                
+     3 │       │       │       │        │       │               │       │import itertools                                                                                  
+     4 │       │       │       │        │       │               │       │                                                                                                  
+     5 │       │       │       │        │       │               │       │                                                                                                  
+     6 │       │       │       │  97%   │   11M │▁              │       │import rasterio as rio                                                                            
+     7 │       │       │       │        │       │               │       │import pandas as pd                                                                               
+     8 │       │       │       │ 100%   │   10M │▁              │     1 │import pystac_client                                                                              
+     9 │       │       │       │        │       │               │     1 │import fsspec                                                                                     
+    10 │       │       │       │        │       │               │       │import s3fs                                                                                       
+    11 │       │       │       │        │       │               │       │                                                                                                  
+    12 │       │       │       │        │       │               │       │                                                                                                  
+    13 │       │       │       │        │       │               │       │from copy import copy                                                                             
+    14 │       │       │       │        │       │               │       │from dataclasses import dataclass                                                                 
+    15 │       │       │       │        │       │               │       │from typing import List, Tuple, Optional, Any, Callable, Iterable                                 
+    16 │       │       │       │        │       │               │       │from functools import partial, reduce, wraps                                                      
+    17 │       │       │       │        │       │               │       │                                                                                                  
+    18 │       │       │       │        │       │               │       │                                                                                                  
+    19 │       │       │       │        │       │               │       │from fsspec.implementations.local import LocalFileSystem                                          
+    20 │       │       │       │        │       │               │       │                                                                                                  
+    21 │       │       │       │        │       │               │       │from ts_stac_cog import StacRecord                                                                
+    22 │       │       │       │        │       │               │       │                                                                                                  
+    23 │       │       │       │        │       │               │       │Affine = Tuple[float, float, float, float, float, float]                                          
+    24 │       │       │       │        │       │               │       │                                                                                                  
+    25 │       │       │       │        │       │               │       │# Constants                                                                                       
+    26 │       │       │       │        │       │               │       │QA_FILL = 0                                                                                       
+    27 │       │       │       │        │       │               │       │QA_CLEAR = 6                                                                                      
+    28 │       │       │       │        │       │               │       │QA_WATER = 7                                                                                      
+    29 │       │       │       │        │       │               │       │CONCURRENT_STAC_QUERIES = 2  # Prevents workers from consuming too much memory                    
+    30 │       │       │       │        │       │               │       │LANDSAT_ARD_C2_FILL_VALUE = 0                                                                     
+    31 │       │       │       │        │       │               │       │                                                                                                  
+    32 │       │       │       │        │       │               │       │                                                                                                  
+    33 │       │       │       │        │       │               │       │# This AWS stuff could likely be simplified more to come ... -tony                                
+    34 │       │       │       │        │       │               │       │                                                                                                  
+    35 │       │       │       │        │       │               │       │def adjust_for_s3(in_dict, filesystem) -> dict:                                                   
+    36 │       │       │       │        │       │               │       │    """                                                                                           
+    37 │       │       │       │        │       │               │       │    Adjust the output file names to use the /vsis3/ file system handler for image data            
+    38 │       │       │       │        │       │               │       │    """                                                                                           
+    39 │       │       │       │        │       │               │       │    out_dict = copy(in_dict)                                                                      
+    40 │       │       │       │        │       │               │       │    if isinstance(filesystem, s3fs.core.S3FileSystem):                                            
+    41 │       │       │       │        │       │               │       │        for key in in_dict:                                                                       
+    42 │       │       │       │        │       │               │       │            if in_dict[key].endswith('.png') or in_dict[key].endswith('.tif'):                    
+    43 │       │       │       │        │       │               │       │                out_dict[key] = in_dict[key].replace('s3:/', '/vsis3')                            
+    44 │       │       │       │        │       │               │       │    return out_dict                                                                               
+    45 │       │       │       │        │       │               │       │                                                                                                  
+    46 │       │       │       │        │       │               │       │def output_files(project_dir: str, project_id: str, plot_id: str, year_doy: str) -> dict:         
+    47 │       │       │       │        │       │               │       │    """                                                                                           
+    48 │       │       │       │        │       │               │       │    Build the file names for the output files for TimeSync                                        
+    49 │       │       │       │        │       │               │       │    """                                                                                           
+    50 │       │       │       │        │       │               │       │    return {                                                                                      
+    51 │       │       │       │        │       │               │       │        'scsv': os.path.join(project_dir, f'prj_{project_id}/{plot_id}_spectral_files_set_{year_  
+    52 │       │       │       │        │       │               │       │        'tcap': os.path.join(project_dir, f'prj_{project_id}/tc/plot_{plot_id}/plot_{plot_id}_{y  
+    53 │       │       │       │        │       │               │       │        'b743': os.path.join(project_dir, f'prj_{project_id}/b743/plot_{plot_id}/plot_{plot_id}_  
+    54 │       │       │       │        │       │               │       │        'b432': os.path.join(project_dir, f'prj_{project_id}/b432/plot_{plot_id}/plot_{plot_id}_  
+    55 │       │       │       │        │       │               │       │                                                                                                  
+    56 │       │       │       │        │       │               │       │                                                                                                  
+    57 │       │       │       │        │       │               │       │@dataclass(frozen=True)                                                                           
+    58 │       │       │       │        │       │               │       │class Bounds:                                                                                     
+    59 │       │       │       │        │       │               │       │    """                                                                                           
+    60 │       │       │       │        │       │               │       │    Class to hold spatial coordinate bounds                                                       
+    61 │       │       │       │        │       │               │       │    """                                                                                           
+    62 │       │       │       │        │       │               │       │    min_x: float                                                                                  
+    63 │       │       │       │        │       │               │       │    max_x: float                                                                                  
+    64 │       │       │       │        │       │               │       │    min_y: float                                                                                  
+    65 │       │       │       │        │       │               │       │    max_y: float                                                                                  
+    66 │       │       │       │        │       │               │       │                                                                                                  
+    67 │       │       │       │        │       │               │       │                                                                                                  
+    68 │       │       │       │        │       │               │       │def timesync_band_list() -> List[str]:                                                            
+    69 │       │       │       │        │       │               │       │    """                                                                                           
+    70 │       │       │       │        │       │               │       │    Get the bands relevant to TimeSync data retrieval                                             
+    71 │       │       │       │        │       │               │       │    """                                                                                           
+    72 │       │       │       │        │       │               │       │    return ['blue', 'green', 'red', 'nir08', 'swir16', 'swir22', 'qa_pixel']                      
+    73 │       │       │       │        │       │               │       │                                                                                                  
+    74 │       │       │       │        │       │               │       │                                                                                                  
+    75 │       │       │       │        │       │               │       │def landsat_optical_band_list() -> List[str]:                                                     
+    76 │       │       │       │        │       │               │       │    """                                                                                           
+    77 │       │       │       │        │       │               │       │    Get the optical wavelength Landsat bands                                                      
+    78 │       │       │       │        │       │               │       │    """                                                                                           
+    79 │       │       │       │        │       │               │       │    return ['blue', 'green', 'red', 'nir08', 'swir16', 'swir22']                                  
+    80 │       │       │       │        │       │               │       │                                                                                                  
+    81 │       │       │       │        │       │               │       │                                                                                                  
+    82 │       │       │       │        │       │               │       │def centered_window(x: float, y: float, width: int, height: int, ds: rio.io.DatasetReader) -> ri  
+    83 │       │       │       │        │       │               │       │    """                                                                                           
+    84 │       │       │       │        │       │               │       │    Create a window centered on the x, y of a pixel of interest                                   
+    85 │       │       │       │        │       │               │       │    Width and height are in pixels                                                                
+    86 │       │       │       │        │       │               │       │    """                                                                                           
+    87 │       │       │       │        │       │               │       │    row_offset, col_offset = ds.index(x, y)                                                       
+    88 │       │       │       │        │       │               │       │    return rio.windows.Window(                                                                    
+    89 │       │       │       │        │       │               │       │        col_offset - (width // 2),                                                                
+    90 │       │       │       │        │       │               │       │        row_offset - (height // 2),                                                               
+    91 │       │       │       │        │       │               │       │        width,                                                                                    
+    92 │       │       │       │        │       │               │       │        height)                                                                                   
+    93 │       │       │       │        │       │               │       │                                                                                                  
+    94 │       │       │       │        │       │               │       │                                                                                                  
+    95 │       │       │       │        │       │               │       │def centered_bounds(x: float, y: float, width: int, height: int, pixel_size: int = 30):           
+    96 │       │       │       │        │       │               │       │    """                                                                                           
+    97 │       │       │       │        │       │               │       │    Create coordinate bounds centered on an x/y coordinate                                        
+    98 │       │       │       │        │       │               │       │    """                                                                                           
+    99 │       │       │       │        │       │               │       │    return Bounds(                                                                                
+   100 │       │       │       │        │       │               │       │        min_x=x - ((width // 2) * pixel_size),                                                    
+   101 │       │       │       │        │       │               │       │        max_x=x + ((width // 2) * pixel_size),                                                    
+   102 │       │       │       │        │       │               │       │        min_y=y - ((height // 2) * pixel_size),                                                   
+   103 │       │       │       │        │       │               │       │        max_y=y + ((height // 2) * pixel_size))                                                   
+   104 │       │       │       │        │       │               │       │                                                                                                  
+   105 │       │       │       │        │       │               │       │                                                                                                  
+   106 │       │       │       │        │       │               │       │def single_pixel_window(x: float, y: float, ds: rio.io.DatasetReader) -> rio.windows.Window:      
+   107 │       │       │       │        │       │               │       │    """                                                                                           
+   108 │       │       │       │        │       │               │       │    Get a window representing a single pixel                                                      
+   109 │       │       │       │        │       │               │       │    """                                                                                           
+   110 │       │       │       │        │       │               │       │    row_offset, col_offset = ds.index(x, y)                                                       
+   111 │       │       │       │        │       │               │       │    return rio.windows.Window(col_offset, row_offset, 1, 1)                                       
+   112 │       │       │       │        │       │               │       │                                                                                                  
+   113 │       │       │       │        │       │               │       │                                                                                                  
+   114 │       │       │       │        │       │               │       │                                                                                                  
+   115 │       │       │       │        │       │               │       │def tile_grid_affine(region: str) -> Affine:                                                      
+   116 │       │       │       │        │       │               │       │    """                                                                                           
+   117 │       │       │       │        │       │               │       │    Get the ARD tile grid affine based on the regional code                                       
+   118 │       │       │       │        │       │               │       │    """                                                                                           
+   119 │       │       │       │        │       │               │       │    return {                                                                                      
+   120 │       │       │       │        │       │               │       │        'CU': (-2565585, 150000, 0, 3314805, 0, -150000),  # CONUS                                
+   121 │       │       │       │        │       │               │       │    }[region]                                                                                     
+   122 │       │       │       │        │       │               │       │                                                                                                  
+   123 │       │       │       │        │       │               │       │                                                                                                  
+   124 │       │       │       │        │       │               │       │def transform_geo(x: float, y: float, affine: Affine) -> Tuple[int, int]:                         
+   125 │       │       │       │        │       │               │       │    """                                                                                           
+   126 │       │       │       │        │       │               │       │    Perform the affine transformation from an x/y coordinate to row/col space.                    
+   127 │       │       │       │        │       │               │       │    """                                                                                           
+   128 │       │       │       │        │       │               │       │    col = (x - affine[0] - affine[3] * affine[2]) / affine[1]                                     
+   129 │       │       │       │        │       │               │       │    row = (y - affine[3] - affine[0] * affine[4]) / affine[5]                                     
+   130 │       │       │       │        │       │               │       │    return int(col), int(row)                                                                     
+   131 │       │       │       │        │       │               │       │                                                                                                  
+   132 │       │       │       │        │       │               │       │                                                                                                  
+   133 │       │       │       │        │       │               │       │def determine_hv(x: float, y: float, region: str) -> Tuple[int, int]:                             
+   134 │       │       │       │        │       │               │       │    """                                                                                           
+   135 │       │       │       │        │       │               │       │    Determine the ARD tile (in h/v coordinates) containing the x/y coordinate                     
+   136 │       │       │       │        │       │               │       │    """                                                                                           
+   137 │       │       │       │        │       │               │       │    h, v = transform_geo(x, y, tile_grid_affine(region))                                          
+   138 │       │       │       │        │       │               │       │    return h, v                                                                                   
+   139 │       │       │       │        │       │               │       │                                                                                                  
+   140 │       │       │       │        │       │               │       │                                                                                                  
+   141 │       │       │       │        │       │               │       │def determine_hvs(bbox, region: str) -> itertools.product:                                        
+   142 │       │       │       │        │       │               │       │    """                                                                                           
+   143 │       │       │       │        │       │               │       │    Determine the h/v coordinates of tiles that intersect a bounding box                          
+   144 │       │       │       │        │       │               │       │    """                                                                                           
+   145 │       │       │       │        │       │               │       │    min_h, min_v = determine_hv(bbox.min_x, bbox.max_y, region)                                   
+   146 │       │       │       │        │       │               │       │    max_h, max_v = determine_hv(bbox.max_x, bbox.min_y, region)                                   
+   147 │       │       │       │        │       │               │       │    return itertools.product(range(min_h, max_h + 1), range(min_v, max_v + 1))                    
+   148 │       │       │       │        │       │               │       │                                                                                                  
+   149 │       │       │       │        │       │               │       │                                                                                                  
+   150 │       │       │       │        │       │               │       │def query_stac(query_params: dict) -> dict:                                                       
+   151 │       │       │       │        │       │               │       │    """                                                                                           
+   152 │       │       │       │        │       │               │       │    Query the STAC catalog using the provided query parameters                                    
+   153 │       │       │       │        │       │               │       │    """                                                                                           
+   154 │       │       │       │        │       │               │       │    stac = pystac_client.Client.open('https://landsatlook.usgs.gov/stac-server')                  
+   155 │       │       │       │        │       │               │       │    # This returns a dictionary with two keys, 'type' and 'features'                              
+   156 │       │       │   1%  │  99%   │   10M │▁              │       │    results = stac.search(**query_params).item_collection_as_dict()                               
+   157 │       │       │       │        │       │               │       │    # 'type' only contains the value 'FeatureCollection'; we care about what is in 'features'     
+   158 │       │       │       │        │       │               │       │    return results['features']                                                                    
+   159 │       │       │       │        │       │               │       │                                                                                                  
+   160 │       │       │       │        │       │               │       │                                                                                                  
+   161 │       │       │       │        │       │               │       │def group_dicts(records: List[dict], key_func: Callable) -> itertools.groupby:                    
+   162 │       │       │       │        │       │               │       │    """                                                                                           
+   163 │       │       │       │        │       │               │       │    Group a list of dictionaries based on key value                                               
+   164 │       │       │       │        │       │               │       │    """                                                                                           
+   165 │       │       │       │        │       │               │       │    records = sorted(records, key=key_func)                                                       
+   166 │       │       │       │        │       │               │       │    return itertools.groupby(records, key=key_func)                                               
+   167 │       │       │       │        │       │               │       │                                                                                                  
+   168 │       │       │       │        │       │               │       │                                                                                                  
+   169 │       │       │       │        │       │               │       │def convert_sr(data: np.ndarray) -> np.ndarray:                                                   
+   170 │       │       │       │        │       │               │       │    """                                                                                           
+   171 │       │       │       │        │       │               │       │    Re-scale Landsat Collection 2 spectral data values back to the Collection 1 range             
+   172 │       │       │       │        │       │               │       │    """                                                                                           
+   173 │       │       │       │        │       │               │       │    return ((data.astype(float) * 0.0000275 - 0.2) * 10000).astype(np.int16)                      
+   174 │       │       │       │        │       │               │       │                                                                                                  
+   175 │       │       │       │        │       │               │       │                                                                                                  
+   176 │       │       │       │        │       │               │       │def data_to_collection_1(old_dict: dict, bands: List[str]) -> dict:                               
+   177 │       │       │       │        │       │               │       │    """                                                                                           
+   178 │       │       │       │        │       │               │       │    Convert a dictionary of surface reflectance bands to the Landsat Collection 1 numerical rang  
+   179 │       │       │       │        │       │               │       │    """                                                                                           
+   180 │       │       │       │        │       │               │       │    new_dict = old_dict.copy()                                                                    
+   181 │       │       │       │        │       │               │       │    for key in bands:                                                                             
+   182 │       │       │       │        │       │               │       │        new_dict[key] = convert_sr(old_dict[key])                                                 
+   183 │       │       │       │        │       │               │       │    return new_dict                                                                               
+   184 │       │       │       │        │       │               │       │                                                                                                  
+   185 │       │       │       │        │       │               │       │                                                                                                  
+   186 │       │       │       │        │       │               │       │def read_bands(record: dict, bands: List[str], plot: Tuple[Any, ...], width: int, height: int) -  
+   187 │       │       │       │        │       │               │       │    """                                                                                           
+   188 │       │       │       │        │       │               │       │    Read in an ROI for an observation in the STAC record for all bands                            
+   189 │       │       │       │        │       │               │       │    """                                                                                           
+   190 │       │       │       │        │       │               │       │    out = {}                                                                                      
+   191 │       │       │       │        │       │               │       │    for band in bands:                                                                            
+   192 │    5% │       │   4%  │        │       │               │     2 │        with rio.open(StacRecord.asset_href(record, band)) as ds:                                 
+   193 │       │       │       │        │       │               │       │            window = centered_window(plot.x, plot.y, width, height, ds)                           
+   194 │       │       │       │        │       │               │       │            # Get a masked array and fill it to avoid a bug with gdal/rasterio                    
+   195 │       │       │   5%  │        │       │               │     2 │            out[band] = ds.read(1, window=window, boundless=True, fill_value=0, masked=True).fil  
+   196 │       │       │       │        │       │               │       │    return out                                                                                    
+   197 │       │       │       │        │       │               │       │                                                                                                  
+   198 │       │       │       │        │       │               │       │                                                                                                  
+   199 │       │       │       │        │       │               │       │def read_qa_at_plot(record: dict, plot: Tuple[Any, ...]) -> int:                                  
+   200 │       │       │       │        │       │               │       │    """                                                                                           
+   201 │       │       │       │        │       │               │       │    Read a single pixel at the plot location                                                      
+   202 │       │       │       │        │       │               │       │    """                                                                                           
+   203 │       │       │   1%  │        │       │               │     1 │    with rio.open(StacRecord.asset_href(record, 'qa_pixel')) as ds:                               
+   204 │       │       │       │        │       │               │       │        window = single_pixel_window(plot.x, plot.y, ds)                                          
+   205 │       │       │       │        │       │               │       │        out = ds.read(1, window=window, boundless=False)                                          
+   206 │       │       │       │        │       │               │       │    if out.size == 0:                                                                             
+   207 │       │       │       │        │       │               │       │        return 1  # Treat values outside the spatial extent as fill                               
+   208 │       │       │       │        │       │               │       │    return out.item()                                                                             
+   209 │       │       │       │        │       │               │       │                                                                                                  
+   210 │       │       │       │        │       │               │       │                                                                                                  
+   211 │       │       │       │        │       │               │       │def add_bands(dict_a: dict, dict_b: dict) -> dict:                                                
+   212 │       │       │       │        │       │               │       │    """                                                                                           
+   213 │       │       │       │        │       │               │       │    Combine two observation dictionaries by adding the values for each band                       
+   214 │       │       │       │        │       │               │       │    """                                                                                           
+   215 │       │       │       │        │       │               │       │    out = {}                                                                                      
+   216 │       │       │       │        │       │               │       │    for band in dict_a:                                                                           
+   217 │       │       │       │        │       │               │       │        out[band] = dict_a[band] + dict_b[band]                                                   
+   218 │       │       │       │        │       │               │       │    return out                                                                                    
+   219 │       │       │       │        │       │               │       │                                                                                                  
+   220 │       │       │       │        │       │               │       │                                                                                                  
+   221 │       │       │       │        │       │               │       │def composite(data: dict, bands: List[str], axis: int = 0) -> np.ndarray:                         
+   222 │       │       │       │        │       │               │       │    """                                                                                           
+   223 │       │       │       │        │       │               │       │    Create a multi-band ndarray from band names                                                   
+   224 │       │       │       │        │       │               │       │    """                                                                                           
+   225 │       │       │       │        │       │               │     1 │    return np.stack([data[band] for band in bands], axis=axis)                                    
+   226 │       │       │       │        │       │               │       │                                                                                                  
+   227 │       │       │       │        │       │               │       │                                                                                                  
+   228 │       │       │       │        │       │               │       │def tasseled_cap(data: dict) -> np.ndarray:                                                       
+   229 │       │       │       │        │       │               │       │    """                                                                                           
+   230 │       │       │       │        │       │               │       │    Create a composite of tasseled cap values                                                     
+   231 │       │       │       │        │       │               │       │    """                                                                                           
+   232 │       │       │       │        │       │               │       │    band_order = ['blue', 'green', 'red', 'nir08', 'swir16', 'swir22']  # Must match coefficient  
+   233 │       │       │       │        │       │               │       │    arr = np.stack([data[band] for band in band_order], axis=2)                                   
+   234 │       │       │       │  72%   │   10M │▁              │       │    b = np.tensordot(arr, [0.2043, 0.4158, 0.5524, 0.5741, 0.3124, 0.2303], axes=1)  # Brightnes  
+   235 │       │       │       │        │       │               │       │    g = np.tensordot(arr, [-0.1603, -0.2819, -0.4934, 0.7940, -0.0002, -0.1446], axes=1)  # Gree  
+   236 │       │       │       │        │       │               │       │    w = np.tensordot(arr, [0.0315, 0.2021, 0.3102, 0.1594, -0.6806, -0.6109], axes=1)  # Wetness  
+   237 │       │       │       │        │       │               │       │    return np.stack([b, g, w])                                                                    
+   238 │       │       │       │        │       │               │       │                                                                                                  
+   239 │       │       │       │        │       │               │       │                                                                                                  
+   240 │       │       │       │        │       │               │       │def build_affine(x_off: float, y_off: float, x_size: float = 30, y_size: float = 30, x_shear: fl  
+   241 │       │       │       │        │       │               │       │                 y_shear: float = 0) -> rio.Affine:                                               
+   242 │       │       │       │        │       │               │       │    """                                                                                           
+   243 │       │       │       │        │       │               │       │    Build the affine tuple in the rasterio format (different from GDAL)                           
+   244 │       │       │       │        │       │               │       │    """                                                                                           
+   245 │       │       │       │        │       │               │       │    return rio.Affine(x_size, x_shear, x_off, y_shear, -y_size, y_off)                            
+   246 │       │       │       │        │       │               │       │                                                                                                  
+   247 │       │       │       │        │       │               │       │                                                                                                  
+   248 │       │       │       │        │       │               │       │def write_to_png(file: str, array: np.ndarray, crs: str, transform: rio.Affine) -> None:          
+   249 │       │       │       │        │       │               │       │    """                                                                                           
+   250 │       │       │       │        │       │               │       │    Write a PNG file as three 8-bit channels                                                      
+   251 │       │       │       │        │       │               │       │    """                                                                                           
+   252 │       │       │       │        │       │               │       │    profile = {                                                                                   
+   253 │       │       │       │        │       │               │       │        'driver': 'PNG',                                                                          
+   254 │       │       │       │        │       │               │       │        'count': 3,                                                                               
+   255 │       │       │       │        │       │               │       │        'nodata': None,                                                                           
+   256 │       │       │       │        │       │               │       │        'crs': crs,                                                                               
+   257 │       │       │       │        │       │               │       │        'transform': transform,                                                                   
+   258 │       │       │       │        │       │               │       │        'height': array.shape[1],                                                                 
+   259 │       │       │       │        │       │               │       │        'width': array.shape[2],                                                                  
+   260 │       │       │       │        │       │               │       │        'dtype': np.uint8}                                                                        
+   261 │       │       │       │        │       │               │       │                                                                                                  
+   262 │       │    7% │  61%  │   9%   │   54M │█▇▆▂▁▄▄▁▁  99% │     3 │    with rio.open(file, mode='w', **profile) as ds:                                               
+   263 │       │       │       │        │       │               │       │        ds.write(array)                                                                           
+   264 │       │       │       │        │       │               │       │                                                                                                  
+   265 │       │       │       │        │       │               │       │                                                                                                  
+   266 │       │       │       │        │       │               │       │def array_mask(array: np.ndarray, value_to_mask = None, axis: int = 0) -> np.ndarray:             
+   267 │       │       │       │        │       │               │       │    """                                                                                           
+   268 │       │       │       │        │       │               │       │    Boolean mask where the array matches the provided value anywhere along an axis                
+   269 │       │       │       │        │       │               │       │    """                                                                                           
+   270 │       │       │       │        │       │               │       │    return (array == value_to_mask).any(axis=axis)                                                
+   271 │       │       │       │        │       │               │       │                                                                                                  
+   272 │       │       │       │        │       │               │       │                                                                                                  
+   273 │       │       │       │        │       │               │       │def apply_mask(array: np.ndarray, mask_array: np.ndarray, mask_value: float) -> np.ndarray:       
+   274 │       │       │       │        │       │               │       │    """                                                                                           
+   275 │       │       │       │        │       │               │       │    Apply a Boolean mask                                                                          
+   276 │       │       │       │        │       │               │       │    """                                                                                           
+   277 │       │       │       │        │       │               │       │    arr = array.copy()                                                                            
+   278 │       │       │       │        │       │               │       │    arr[mask_array] = mask_value                                                                  
+   279 │       │       │       │        │       │               │       │    return arr                                                                                    
+   280 │       │       │       │        │       │               │       │                                                                                                  
+   281 │       │       │       │        │       │               │       │                                                                                                  
+   282 │       │       │       │        │       │               │       │def byte_scale(array: np.ndarray, min_value: float, max_value: float) -> np.ndarray:              
+   283 │       │       │       │        │       │               │       │    """                                                                                           
+   284 │       │       │       │        │       │               │       │    Scale the data between min_value and max_value to 0-255                                       
+   285 │       │       │       │        │       │               │       │    """                                                                                           
+   286 │       │       │       │        │       │               │       │    out_array = (255 / (max_value - min_value)) * (array - min_value)                             
+   287 │       │       │       │        │       │               │       │    out_array = np.minimum(out_array, 255)                                                        
+   288 │       │       │       │        │       │               │       │    out_array = np.maximum(out_array, 0)                                                          
+   289 │       │       │       │        │       │               │       │    return out_array.astype(np.uint8)                                                             
+   290 │       │       │       │        │       │               │       │                                                                                                  
+   291 │       │       │       │        │       │               │       │                                                                                                  
+   292 │       │       │       │        │       │               │       │def byte_scale_bands(array: np.ndarray, all_bounds: List[Tuple[int, int]],                        
+   293 │       │       │       │        │       │               │       │                     mask: Optional[np.ndarray] = None, axis: int = 0) -> np.ndarray:             
+   294 │       │       │       │        │       │               │       │    """                                                                                           
+   295 │       │       │       │        │       │               │       │    Convert a multi-band array to scaled 8-bit                                                    
+   296 │       │       │       │        │       │               │       │    Masked values are set to 0                                                                    
+   297 │       │       │       │        │       │               │       │    """                                                                                           
+   298 │       │       │       │        │       │               │       │    out = []                                                                                      
+   299 │       │       │       │        │       │               │       │    for i, (min_value, max_value) in enumerate(all_bounds):                                       
+   300 │       │       │       │        │       │               │       │        byte_image = byte_scale(array.take(i, axis=axis), min_value, max_value)                   
+   301 │       │       │       │        │       │               │       │        out.append(apply_mask(byte_image, mask, mask_value=0))                                    
+   302 │       │       │       │        │       │               │       │    return np.stack(out, axis=axis)                                                               
+   303 │       │       │       │        │       │               │       │                                                                                                  
+   304 │       │       │       │        │       │               │       │                                                                                                  
+   305 │       │       │       │        │       │               │       │def center(array: np.ndarray) -> Tuple[int, ...]:                                                 
+   306 │       │       │       │        │       │               │       │    """                                                                                           
+   307 │       │       │       │        │       │               │       │    Get the indices for the center of an array                                                    
+   308 │       │       │       │        │       │               │       │    """                                                                                           
+   309 │       │       │       │        │       │               │       │    return tuple(x // 2 for x in array.shape)                                                     
+   310 │       │       │       │        │       │               │       │                                                                                                  
+   311 │       │       │       │        │       │               │       │                                                                                                  
+   312 │       │       │       │        │       │               │       │def center_value(array: np.ndarray) -> int:                                                       
+   313 │       │       │       │        │       │               │       │    """                                                                                           
+   314 │       │       │       │        │       │               │       │    Get the center value of an array                                                              
+   315 │       │       │       │        │       │               │       │    """                                                                                           
+   316 │       │       │       │        │       │               │       │    return array[center(array)]                                                                   
+   317 │       │       │       │        │       │               │       │                                                                                                  
+   318 │       │       │       │        │       │               │       │                                                                                                  
+   319 │       │       │       │        │       │               │       │def spectral_data(data: dict) -> dict:                                                            
+   320 │       │       │       │        │       │               │       │    """                                                                                           
+   321 │       │       │       │        │       │               │       │    Get the data for the center pixel in the chip                                                 
+   322 │       │       │       │        │       │               │       │    """                                                                                           
+   323 │       │       │       │        │       │               │       │    return {band: center_value(array) for band, array in data.items()}                            
+   324 │       │       │       │        │       │               │       │                                                                                                  
+   325 │       │       │       │        │       │               │       │                                                                                                  
+   326 │       │       │       │        │       │               │       │def df_to_csv(df: pd.DataFrame, params: dict, output: dict) -> None:                              
+   327 │       │       │       │        │       │               │       │    """                                                                                           
+   328 │       │       │       │        │       │               │       │    Write the dataframe to the csv file                                                           
+   329 │       │       │       │        │       │               │       │    """                                                                                           
+   330 │       │       │       │        │       │               │       │    fs = fsspec.filesystem('s3', anon=False, requester_pays=True)                                 
+   331 │       │       │       │        │       │               │       │                                                                                                  
+   332 │       │       │   5%  │        │       │               │       │    with fs.open(output['scsv'], 'w') as f:                                                       
+   333 │       │       │       │        │       │               │       │        df.to_csv(f, index=False)                                                                 
+   334 │       │       │       │        │       │               │       │                                                                                                  
+   335 │       │       │       │        │       │               │       │                                                                                                  
+   336 │       │       │       │        │       │               │       │def check_bit(value: int, bit: int) -> bool:                                                      
+   337 │       │       │       │        │       │               │       │    """                                                                                           
+   338 │       │       │       │        │       │               │       │    Check whether a bit is set                                                                    
+   339 │       │       │       │        │       │               │       │    """                                                                                           
+   340 │       │       │       │        │       │               │       │    return bool((value & (1 << bit)))                                                             
+   341 │       │       │       │        │       │               │       │                                                                                                  
+   342 │       │       │       │        │       │               │       │                                                                                                  
+   343 │       │       │       │        │       │               │       │def passes_qa_check(qa: int, enable_cloud_filtering=False) -> bool:                               
+   344 │       │       │       │        │       │               │       │    """                                                                                           
+   345 │       │       │       │        │       │               │       │    Make sure the QA value is not indicating fill and (optionally) ensure clear or water bits ar  
+   346 │       │       │       │        │       │               │       │    """                                                                                           
+   347 │       │       │       │        │       │               │       │    if check_bit(qa, QA_FILL):                                                                    
+   348 │       │       │       │        │       │               │       │        return False                                                                              
+   349 │       │       │       │        │       │               │       │    if enable_cloud_filtering and not (check_bit(qa, QA_CLEAR) or check_bit(qa, QA_WATER)):       
+   350 │       │       │       │        │       │               │       │        return False                                                                              
+   351 │       │       │       │        │       │               │       │    return True                                                                                   
+   352 │       │       │       │        │       │               │       │                                                                                                  
+   353 │       │       │       │        │       │               │       │def classify_qa(qa: int) -> int:                                                                  
+   354 │       │       │       │        │       │               │       │    """                                                                                           
+   355 │       │       │       │        │       │               │       │    Return a value indicating the pixel is clear/water (0) or fill/cloud (1)                      
+   356 │       │       │       │        │       │               │       │    """                                                                                           
+   357 │       │       │       │        │       │               │       │    if passes_qa_check(qa, enable_cloud_filtering=True):                                          
+   358 │       │       │       │        │       │               │       │        return 0                                                                                  
+   359 │       │       │       │        │       │               │       │    return 1                                                                                      
+   360 │       │       │       │        │       │               │       │                                                                                                  
+   361 │       │       │       │        │       │               │       │                                                                                                  
+   362 │       │       │       │        │       │               │       │def build_df(pixel_data: dict, record: dict, project_id: str, plot_id: str) -> pd.DataFrame:      
+   363 │       │       │       │        │       │               │       │    """                                                                                           
+   364 │       │       │       │        │       │               │       │    Build the output dataframe                                                                    
+   365 │       │       │       │        │       │               │       │    """                                                                                           
+   366 │       │       │       │        │       │               │       │    return pd.DataFrame({                                                                         
+   367 │       │       │       │        │       │               │       │        'sensor': StacRecord.sensor(record),                                                      
+   368 │       │       │       │        │       │               │       │        'project_id': project_id,                                                                 
+   369 │       │       │       │        │       │               │       │        'plot_id': plot_id,                                                                       
+   370 │       │       │       │        │       │               │       │        'hv': StacRecord.hv(record),                                                              
+   371 │       │       │       │        │       │               │       │        'year': StacRecord.year(record),                                                          
+   372 │       │       │       │        │       │               │       │        'doy': StacRecord.doy(record),                                                            
+   373 │       │       │       │        │       │               │       │        'blue': pixel_data['blue'],                                                               
+   374 │       │       │       │        │       │               │       │        'green': pixel_data['green'],                                                             
+   375 │       │       │       │        │       │               │       │        'red': pixel_data['red'],                                                                 
+   376 │       │       │       │        │       │               │       │        'nir': pixel_data['nir08'],                                                               
+   377 │       │       │       │        │       │               │       │        'swir1': pixel_data['swir16'],                                                            
+   378 │       │       │       │        │       │               │       │        'swir2': pixel_data['swir22'],                                                            
+   379 │       │       │       │        │       │               │       │        'qa': classify_qa(pixel_data['qa_pixel']),                                                
+   380 │       │       │       │        │       │               │       │        'date': StacRecord.date(record)}, index=[0])                                              
+   381 │       │       │       │        │       │               │       │                                                                                                  
+   382 │       │       │       │        │       │               │       │                                                                                                  
+   383 │       │       │       │        │       │               │       │def invalid_pixel() -> dict:                                                                      
+   384 │       │       │       │        │       │               │       │    """                                                                                           
+   385 │       │       │       │        │       │               │       │    Get band values to represent and invalid pixel                                                
+   386 │       │       │       │        │       │               │       │    """                                                                                           
+   387 │       │       │       │        │       │               │       │    return {                                                                                      
+   388 │       │       │       │        │       │               │       │        'blue': 0,                                                                                
+   389 │       │       │       │        │       │               │       │        'green': 0,                                                                               
+   390 │       │       │       │        │       │               │       │        'red': 0,                                                                                 
+   391 │       │       │       │        │       │               │       │        'nir08': 0,                                                                               
+   392 │       │       │       │        │       │               │       │        'swir16': 0,                                                                              
+   393 │       │       │       │        │       │               │       │        'swir22': 0,                                                                              
+   394 │       │       │       │        │       │               │       │        'qa_pixel': 1}                                                                            
+   395 │       │       │       │        │       │               │       │                                                                                                  
+   396 │       │       │       │        │       │               │       │def build_query(h: int, v: int, region: str = 'CU', collection: str = 'landsat-c2ard-sr',         
+   397 │       │       │       │        │       │               │       │                datetime: str = '1984-01/1985-12-31', limit: Optional[int] = None) -> dict:       
+   398 │       │       │       │        │       │               │       │    """                                                                                           
+   399 │       │       │       │        │       │               │       │    Construct a STAC query based on h/v tile coordinates                                          
+   400 │       │       │       │        │       │               │       │    """                                                                                           
+   401 │       │       │       │        │       │               │       │    return {                                                                                      
+   402 │       │       │       │        │       │               │       │        'collections': collection,                                                                
+   403 │       │       │       │        │       │               │       │        'datetime': datetime,                                                                     
+   404 │       │       │       │        │       │               │       │        'limit': limit,                                                                           
+   405 │       │       │       │        │       │               │       │        'query': {'landsat:grid_horizontal': {'eq': f'{h:02}'},                                   
+   406 │       │       │       │        │       │               │       │                  'landsat:grid_vertical': {'eq': f'{v:02}'},                                     
+   407 │       │       │       │        │       │               │       │                  'landsat:grid_region': {'eq': region}}}                                         
+   408 │       │       │       │        │       │               │       │                                                                                                  
+   409 │       │       │       │        │       │               │       │def group_records(records: List[dict]) -> List[List[dict]]:                                       
+   410 │       │       │       │        │       │               │       │    """                                                                                           
+   411 │       │       │       │        │       │               │       │    Group records based on the observation ID                                                     
+   412 │       │       │       │        │       │               │       │    """                                                                                           
+   413 │       │       │       │        │       │               │       │    out = []                                                                                      
+   414 │       │       │       │        │       │               │       │    for _, group in group_dicts(records, StacRecord.year_doy):                                    
+   415 │       │       │       │        │       │               │       │        out.append(list(group))                                                                   
+   416 │       │       │       │        │       │               │       │    return out                                                                                    
+   417 │       │       │       │        │       │               │       │                                                                                                  
+   418 │       │       │       │        │       │               │       │def stac_records_for_plot(plot: Tuple[Any, ...], params: dict) -> List[dict]:                     
+   419 │       │       │       │        │       │               │       │    """                                                                                           
+   420 │       │       │       │        │       │               │       │    Retrieve the stac records relevant for the plot                                               
+   421 │       │       │       │        │       │               │       │    """                                                                                           
+   422 │       │       │       │        │       │               │       │    query_results = []                                                                            
+   423 │       │       │       │        │       │               │       │    roi = centered_bounds(plot.x, plot.y, params['chip_size'][0], params['chip_size'][1])         
+   424 │       │       │       │        │       │               │       │    my_year = params['year']                                                                      
+   425 │       │       │       │        │       │               │       │    my_dates = f'{my_year}-01-01/{my_year}-12-01'                                                 
+   426 │       │       │       │        │       │               │       │    for h, v in determine_hvs(roi, region=params['region']):                                      
+   427 │       │       │       │        │       │               │       │        query_results.extend(query_stac(build_query(h, v, region=params['region'], datetime=my_d  
+   428 │       │       │       │        │       │               │       │    return query_results                                                                          
+   429 │       │       │       │        │       │               │       │                                                                                                  
+   430 │       │       │       │        │       │               │       │def make_dirs(fs, file: str) -> None:                                                             
+   431 │       │       │       │        │       │               │       │    """                                                                                           
+   432 │       │       │       │        │       │               │       │    Create parent directories if it makes sense to do so                                          
+   433 │       │       │       │        │       │               │       │    """                                                                                           
+   434 │       │       │       │        │       │               │       │    if isinstance(fs, LocalFileSystem):                                                           
+   435 │       │       │       │        │       │               │       │        fs.makedirs(os.path.dirname(file), exist_ok=True)                                         
+   436 │       │       │       │        │       │               │       │                                                                                                  
+   437 │       │       │       │        │       │               │       │                                                                                                  
+   438 │       │       │       │        │       │               │       │def process_group(group: List[dict], plot: Tuple[Any, ...], params: dict) -> None:                
+   439 │       │       │       │        │       │               │       │    """                                                                                           
+   440 │       │       │       │        │       │               │       │    Process a group of STAC records associated with a plot into output PNGs                       
+   441 │       │       │       │        │       │               │       │    """                                                                                           
+   442 │       │       │       │        │       │               │       │    fs = fsspec.filesystem('s3', anon=False, requester_pays=True)                                 
+   443 │       │       │       │        │       │               │       │                                                                                                  
+   444 │       │       │       │        │       │               │       │    # Set up the output filenames and (as applicable) directories                                 
+   445 │       │       │       │        │       │               │       │    output = adjust_for_s3(                                                                       
+   446 │       │       │       │        │       │               │       │        output_files(params['project_dir'], plot.project_id, plot.plot_id, StacRecord.year_doy(g  
+   447 │       │       │       │        │       │               │       │        fs)                                                                                       
+   448 │       │       │       │        │       │               │       │    for out in output.values():                                                                   
+   449 │       │       │       │        │       │               │       │        make_dirs(fs, out)                                                                        
+   450 │       │       │       │        │       │               │       │                                                                                                  
+   451 │       │       │       │        │       │               │       │    # Determine if the center pixel is fill                                                       
+   452 │       │       │       │        │       │               │       │    if not any(passes_qa_check(read_qa_at_plot(record, plot)) for record in group):               
+   453 │       │       │       │        │       │               │       │        # Optionally, write an entry for an invalid pixel. This had been previous functionality,  
+   454 │       │       │       │        │       │               │       │        # but because TimeSync does not expect this entry, I am disabling it.                     
+   455 │       │       │       │        │       │               │       │        # df_to_csv(build_df(invalid_pixel(), group[0], plot.project_id, plot.plot_id), params,   
+   456 │       │       │       │        │       │               │       │        return                                                                                    
+   457 │       │       │       │        │       │               │       │                                                                                                  
+   458 │       │       │       │        │       │               │       │    # Read and combine the data records                                                           
+   459 │       │       │       │        │       │               │       │    data_stack = [                                                                                
+   460 │       │       │       │        │       │               │       │        read_bands(observation, timesync_band_list(), plot, params['chip_size'][0], params['chip  
+   461 │       │       │       │        │       │               │       │        observation in group]                                                                     
+   462 │       │       │       │        │       │               │       │    combined_data = data_to_collection_1(reduce(add_bands, data_stack), landsat_optical_band_lis  
+   463 │       │       │       │        │       │               │       │                                                                                                  
+   464 │       │       │       │        │       │               │       │                                                                                                  
+   465 │       │       │       │        │       │               │       │    # Get geospatial attributes                                                                   
+   466 │       │       │       │        │       │               │       │    bounds = centered_bounds(plot.x, plot.y, params['chip_size'][0], params['chip_size'][1])      
+   467 │       │       │       │        │       │               │       │    aff = build_affine(bounds.min_x, bounds.max_y)                                                
+   468 │       │       │       │        │       │               │       │    crs = StacRecord.crs(group[0])                                                                
+   469 │       │       │       │        │       │               │       │                                                                                                  
+   470 │       │       │       │        │       │               │       │    # Mask for fill values                                                                        
+   471 │       │       │       │        │       │               │       │    fill_value = convert_sr(np.array(LANDSAT_ARD_C2_FILL_VALUE))                                  
+   472 │       │       │       │        │       │               │       │    mask = array_mask(composite(combined_data, landsat_optical_band_list()), fill_value)          
+   473 │       │       │       │        │       │               │       │                                                                                                  
+   474 │       │       │       │        │       │               │       │    # Calculate the output chip data                                                              
+   475 │       │       │       │        │       │               │       │    output_tcap = tasseled_cap(combined_data)                                                     
+   476 │       │       │       │        │       │               │       │    output_b743 = composite(combined_data, bands=['swir22', 'nir08', 'red'])                      
+   477 │       │       │       │        │       │               │       │    output_b432 = composite(combined_data, bands=['nir08', 'red', 'green'])                       
+   478 │       │       │       │        │       │               │       │                                                                                                  
+   479 │       │       │       │        │       │               │       │    # Stretch the chip data and write to PNG                                                      
+   480 │       │       │       │        │       │               │       │    write_to_png(output['tcap'], byte_scale_bands(output_tcap, [(604, 5592), (49, 3147), (-2245,  
+   481 │       │       │       │        │       │               │       │    write_to_png(output['b743'], byte_scale_bands(output_b743, [(-904, 3696), (151, 4951), (-300  
+   482 │       │       │       │        │       │               │       │    write_to_png(output['b432'], byte_scale_bands(output_b432, [(151, 4951), (-300, 2500), (50,   
+   483 │       │       │       │        │       │               │       │                                                                                                  
+   484 │       │       │       │        │       │               │       │    # Define the metadata and spectral data for this observation and export to a csv              
+   485 │       │       │       │        │       │               │       │    df_to_csv(build_df(spectral_data(combined_data), group[0], plot.project_id, plot.plot_id), p  
+   486 │       │       │       │        │       │               │       │                                                                                                  
+   487 │       │       │       │        │       │               │       │                                                                                                  
+       │       │       │       │        │       │               │       │                                                                                                  
+╶──────┼───────┼───────┼───────┼────────┼───────┼───────────────┼───────┼─────────────────────────────────────────────────────────────────────────────────────────────────╴
+       │       │       │       │        │       │               │       │function summary for /home/ec2-user/opt/timesync/tony/2a_cmdline/ts_process_group.py              
+   150 │       │       │   1%  │  99%   │   10M │▁              │       │query_stac                                                                                        
+   186 │    5% │       │   9%  │        │       │               │     4 │read_bands                                                                                        
+   199 │       │       │   2%  │        │       │               │     1 │read_qa_at_plot                                                                                   
+   228 │       │       │       │  72%   │   10M │▂              │       │tasseled_cap                                                                                      
+   248 │       │    7% │  61%  │   9%   │   54M │█████████  99% │     3 │write_to_png                                                                                      
+   292 │       │       │       │        │       │               │       │byte_scale_bands                                                                                  
+   326 │       │       │   5%  │        │       │               │       │df_to_csv                                                                                         
+       ╵       ╵       ╵       ╵        ╵       ╵               ╵       ╵                                                                                                  
+Top AVERAGE memory consumption, by line:
+(1)   262:    54 MB                                                                                                                                                         
+Top PEAK memory consumption, by line:
+(1)   262:    54 MB                                                                                                                                                         
+(2)     6:    11 MB                                                                                                                                                         
+(3)     8:    10 MB                                                                                                                                                         
+(4)   234:    10 MB                                                                                                                                                         
+(5)   156:    10 MB                                                                                                                                                         
+                                /home/ec2-user/opt/timesync/tony/2a_cmdline/ts_main_loop.py: % of time =   3.47% (8.335s) out of 4m:0.106s.                                
+       ╷       ╷       ╷       ╷        ╷       ╷               ╷       ╷                                                                                                  
+       │Time   │–––––– │–––––– │Memory  │–––––– │–––––––––––    │Copy   │                                                                                                  
+  Line │Python │native │system │Python  │peak   │timeline/%     │(MB/s) │/home/ec2-user/opt/timesync/tony/2a_cmdline/ts_main_loop.py                                       
+╺━━━━━━┿━━━━━━━┿━━━━━━━┿━━━━━━━┿━━━━━━━━┿━━━━━━━┿━━━━━━━━━━━━━━━┿━━━━━━━┿━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸
+     1 │       │       │       │        │       │               │       │#!/usr/bin/env python                                                                             
+     2 │       │       │       │        │       │               │       │# coding: utf-8                                                                                   
+     3 │       │       │       │        │       │               │       │                                                                                                  
+     4 │       │       │       │        │       │               │       │# Python AWS and GDAL BS                                                                          
+     5 │       │       │       │        │       │               │       │import os                                                                                         
+     6 │       │       │       │        │       │               │       │                                                                                                  
+     7 │       │       │       │        │       │               │       │os.environ['AWS_REQUEST_PAYER'] = 'requester'                                                     
+     8 │       │       │       │        │       │               │       │os.environ['GDAL_DISABLE_READDIR_ON_OPEN']='EMPTY_DIR'                                            
+     9 │       │       │       │        │       │               │       │os.environ['GDAL_HTTP_MAX_RETRY']='10'                                                            
+    10 │       │       │       │        │       │               │       │os.environ['GDAL_HTTP_RETRY_DELAY']='3'                                                           
+    11 │       │       │       │        │       │               │       │os.environ['GDAL_PAM_ENABLED']='NO'                                                               
+    12 │       │       │       │        │       │               │       │                                                                                                  
+    13 │       │       │       │        │       │               │       │                                                                                                  
+    14 │       │       │       │        │       │               │       │from functools import partial, reduce, wraps                                                      
+    15 │       │       │       │        │       │               │       │from typing import List, Tuple, Optional, Any, Callable, Iterable                                 
+    16 │       │       │       │        │       │               │       │                                                                                                  
+    17 │       │       │   2%  │ 100%   │   31M │▁▁▁            │     2 │import pandas as pd                                                                               
+    18 │       │       │       │        │       │               │       │                                                                                                  
+    19 │       │       │       │        │       │               │       │from ts_process_group import stac_records_for_plot, group_records                                 
+    20 │       │       │       │        │       │               │       │from ts_process_group import process_group                                                        
+    21 │       │       │       │        │       │               │       │                                                                                                  
+    22 │       │       │       │        │       │               │       │from ts_log_stuff import format_plot_data, log_file_name                                          
+    23 │       │       │       │        │       │               │       │                                                                                                  
+    24 │       │       │       │        │       │               │       │def process_plot(plot: Tuple[Any, ...], params: dict) -> None:                                    
+    25 │       │       │       │        │       │               │       │    """                                                                                           
+    26 │       │       │       │        │       │               │       │    Process an individual plot                                                                    
+    27 │       │       │       │        │       │               │       │    """                                                                                           
+    28 │       │       │       │        │       │               │       │    print('called process_plot')                                                                  
+    29 │       │       │       │        │       │               │       │    groups = group_records(stac_records_for_plot(plot, params))                                   
+    30 │       │       │       │        │       │               │       │    for group in groups:                                                                          
+    31 │       │       │       │        │       │               │       │        process_group(group, plot, params)                                                        
+    32 │       │       │       │        │       │               │       │                                                                                                  
+    33 │       │       │       │        │       │               │       │                                                                                                  
+    34 │       │       │       │        │       │               │       │def process_on_local(project_dir, project_id, plot_id, region, chip_size, year, x, y):            
+    35 │       │       │       │        │       │               │       │    """                                                                                           
+    36 │       │       │       │        │       │               │       │    Local single-threaded processing                                                              
+    37 │       │       │       │        │       │               │       │    """                                                                                           
+    38 │       │       │       │        │       │               │       │                                                                                                  
+    39 │       │       │       │        │       │               │       │    plot_file=f'fake_plot_file_{project_id}_plot{plot_id}.csv'                                    
+    40 │       │       │       │        │       │               │       │    params = {                                                                                    
+    41 │       │       │       │        │       │               │       │        'project_dir': project_dir,                                                               
+    42 │       │       │       │        │       │               │       │        'plot_file': plot_file,                                                                   
+    43 │       │       │       │        │       │               │       │        'region': region,                                                                         
+    44 │       │       │       │        │       │               │       │        'chip_size': chip_size,                                                                   
+    45 │       │       │       │        │       │               │       │        'year': year                                                                              
+    46 │       │       │       │        │       │               │       │    }                                                                                             
+    47 │       │       │       │        │       │               │       │                                                                                                  
+    48 │       │       │       │        │       │               │       │    # make plot df for legacy expectations Kelcy and Code code.                                   
+    49 │       │       │       │        │       │               │       │                                                                                                  
+    50 │       │       │       │        │       │               │       │    plot_l = []                                                                                   
+    51 │       │       │       │        │       │               │       │    plot_d = {                                                                                    
+    52 │       │       │       │        │       │               │       │            'project_id': project_id,                                                             
+    53 │       │       │       │        │       │               │       │            'plot_id': plot_id,                                                                   
+    54 │       │       │       │        │       │               │       │            'x': x,                                                                               
+    55 │       │       │       │        │       │               │       │            'y':y                                                                                 
+    56 │       │       │       │        │       │               │       │            }                                                                                     
+    57 │       │       │       │        │       │               │       │    plot_l.append(plot_d)                                                                         
+    58 │       │       │       │        │       │               │       │                                                                                                  
+    59 │       │       │       │        │       │               │       │    plots_df = pd.DataFrame(plot_l)  # plots is misnomer - only one defined by x and y            
+    60 │       │       │       │        │       │               │       │    for plot in plots_df.itertuples():                                                            
+    61 │       │       │       │        │       │               │       │        print(plot)                                                                               
+    62 │       │       │       │        │       │               │       │        process_plot(plot, params)                                                                
+    63 │       │       │       │        │       │               │       │        print('Success tracking goes here')                                                       
+    64 │       │       │       │        │       │               │       │                                                                                                  
+    65 │       │       │       │        │       │               │       │                                                                                                  
+    66 │       │       │       │        │       │               │       │                                                                                                  
+    67 │       │       │       │        │       │               │       │def timesync_data_extraction(project_dir, project_id, plot_id, region, chip_size, year, x, y):    
+    68 │       │       │       │        │       │               │       │    """                                                                                           
+    69 │       │       │       │        │       │               │       │    Run TimeSync data extraction                                                                  
+    70 │       │       │       │        │       │               │       │    """                                                                                           
+    71 │       │       │       │        │       │               │       │    process_on_local(project_dir, project_id, plot_id, region, chip_size, year, x, y)             
+    72 │       │       │       │        │       │               │       │                                                                                                  
+    73 │       │       │       │        │       │               │       │                                                                                                  
+    74 │       │       │       │        │       │               │       │def run_timesync(plot_id, year, x, y, project_id):                                                
+    75 │       │       │       │        │       │               │       │                                                                                                  
+    76 │       │       │       │        │       │               │       │    config_params = {                                                                             
+    77 │       │       │       │        │       │               │       │        'project_dir': f's3://dev-nlcd-developer/timesync/{project_id}/',                         
+    78 │       │       │       │        │       │               │       │        'project_id': project_id,                                                                 
+    79 │       │       │       │        │       │               │       │        'plot_id': plot_id,                                                                       
+    80 │       │       │       │        │       │               │       │        'region': 'CU',                                                                           
+    81 │       │       │       │        │       │               │       │        'chip_size': [255, 255],                                                                  
+    82 │       │       │       │        │       │               │       │        'year': year,                                                                             
+    83 │       │       │       │        │       │               │       │        'x': x,                                                                                   
+    84 │       │       │       │        │       │               │       │        'y': y                                                                                    
+    85 │       │       │       │        │       │               │       │    }                                                                                             
+    86 │       │       │       │        │       │               │       │                                                                                                  
+    87 │       │       │       │        │       │               │       │    timesync_data_extraction(**config_params)  # docker and the cluster will not need dask        
+    88 │       │       │       │        │       │               │       │                                                                                                  
+    89 │       │       │       │        │       │               │       │                                                                                                  
+       ╵       ╵       ╵       ╵        ╵       ╵               ╵       ╵                                                                                                  
+Top PEAK memory consumption, by line:
+(1)    17:    31 MB                                                                                                                                                         
