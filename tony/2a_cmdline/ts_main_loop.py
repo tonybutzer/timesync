@@ -106,13 +106,23 @@ def process_on_local(project_dir, project_id, plot_id, region, chip_size, year, 
         save_qa_rejects(year, plot)
         print('Success tracking goes here')
   
-
+def PrintException():
+    exc_type, exc_obj, tb = sys.exc_info()
+    f = tb.tb_frame
+    lineno = tb.tb_lineno
+    filename = f.f_code.co_filename
+    linecache.checkcache(filename)
+    line = linecache.getline(filename, lineno, f.f_globals)
+    print 'EXCEPTION IN ({}, LINE {} "{}"): {}'.format(filename, lineno, line.strip(), exc_obj)
 
 def timesync_data_extraction(project_dir, project_id, plot_id, region, chip_size, year, x, y):
     """
     Run TimeSync data extraction
     """
-    process_on_local(project_dir, project_id, plot_id, region, chip_size, year, x, y)
+    try:
+        process_on_local(project_dir, project_id, plot_id, region, chip_size, year, x, y)
+    except:
+        PrintException()
 
 
 def run_timesync(plot_id, year, x, y, project_id):

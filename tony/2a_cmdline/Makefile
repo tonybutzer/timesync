@@ -20,6 +20,9 @@ profile:
 phtml:
 	scalene --html --outfile a.html ts_user.py --year 1997 --plot_id 1 --x -530580 --y 1318380  3132
 
+cout:
+	rm -fr .out/*
+
 flowchart:
 	pyan3 -c --dot ts_process_group.py |dot -Tsvg -o a.svg
 	pyan3 -c --dot ts_process_group.py |dot -Tpng -o a.png
