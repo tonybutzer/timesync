@@ -45,7 +45,7 @@ def do_job(plot_id, year, x, y, project_id):
     cmd = make_cmd(plot_id, year, x, y, project_id)
     print(cmd)
     number_str = str(plot_id).zfill(4)
-    job_name=f"{number_str}_{project_id}"
+    job_name=f"{year}_{number_str}_{project_id}"
     print(job_name)
     slurm_text = get_slurm_text(cmd, job_name)
     job = write_job(slurm_text, job_name)

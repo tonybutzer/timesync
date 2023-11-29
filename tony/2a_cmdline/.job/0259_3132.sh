@@ -10,4 +10,4 @@
 #SBATCH --output=.out/0259_3132.out
 #SBATCH --error=.out/0259_3132.err
 source /efs/mambaforge/bin/activate city
-python3 ts_user.py --year 1987 --x -508170 --y 1333260 --plot_id 259 3132
+python3 ts_user.py --year 1999 --x -508170 --y 1333260 --plot_id 259 3132

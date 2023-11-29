@@ -1,0 +1,39 @@
+Traceback (most recent call last):
+  File "rasterio/_base.pyx", line 310, in rasterio._base.DatasetBase.__init__
+  File "rasterio/_base.pyx", line 221, in rasterio._base.open_dataset
+  File "rasterio/_err.pyx", line 221, in rasterio._err.exc_wrap_pointer
+rasterio._err.CPLE_HttpResponseError: CURL error: Recv failure: Connection reset by peer
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/ec2-user/opt/timesync/tony/2a_cmdline/ts_user.py", line 43, in <module>
+    command_line_runner()
+  File "/home/ec2-user/opt/timesync/tony/2a_cmdline/ts_user.py", line 36, in command_line_runner
+    run_timesync(plot_id, year, x, y, project_id)
+  File "/home/ec2-user/opt/timesync/tony/2a_cmdline/ts_main_loop.py", line 87, in run_timesync
+    timesync_data_extraction(**config_params)  # docker and the cluster will not need dask
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ec2-user/opt/timesync/tony/2a_cmdline/ts_main_loop.py", line 71, in timesync_data_extraction
+    process_on_local(project_dir, project_id, plot_id, region, chip_size, year, x, y)
+  File "/home/ec2-user/opt/timesync/tony/2a_cmdline/ts_main_loop.py", line 62, in process_on_local
+    process_plot(plot, params)
+  File "/home/ec2-user/opt/timesync/tony/2a_cmdline/ts_main_loop.py", line 31, in process_plot
+    process_group(group, plot, params)
+  File "/home/ec2-user/opt/timesync/tony/2a_cmdline/ts_process_group.py", line 452, in process_group
+    if not any(passes_qa_check(read_qa_at_plot(record, plot)) for record in group):
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ec2-user/opt/timesync/tony/2a_cmdline/ts_process_group.py", line 452, in <genexpr>
+    if not any(passes_qa_check(read_qa_at_plot(record, plot)) for record in group):
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ec2-user/opt/timesync/tony/2a_cmdline/ts_process_group.py", line 203, in read_qa_at_plot
+    with rio.open(StacRecord.asset_href(record, 'qa_pixel')) as ds:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/efs/mambaforge/envs/city/lib/python3.11/site-packages/rasterio/env.py", line 451, in wrapper
+    return f(*args, **kwds)
+           ^^^^^^^^^^^^^^^^
+  File "/efs/mambaforge/envs/city/lib/python3.11/site-packages/rasterio/__init__.py", line 304, in open
+    dataset = DatasetReader(path, driver=driver, sharing=sharing, **kwargs)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "rasterio/_base.pyx", line 312, in rasterio._base.DatasetBase.__init__
+rasterio.errors.RasterioIOError: CURL error: Recv failure: Connection reset by peer

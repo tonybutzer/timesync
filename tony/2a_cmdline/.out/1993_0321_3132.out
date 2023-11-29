@@ -1,0 +1,4 @@
+{'project_id': '3132', 'year': '1993', 'x': -566790, 'y': 1215300, 'plot_id': '321', 'strata': '41'}
+Pandas(Index=0, project_id='3132', plot_id='321', x=-566790, y=1215300)
+called process_plot
+Success tracking goes here
