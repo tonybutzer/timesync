@@ -3,6 +3,8 @@
 
 # Python AWS and GDAL BS
 import os
+import pickle
+import boto3
 
 os.environ['AWS_REQUEST_PAYER'] = 'requester'
 os.environ['GDAL_DISABLE_READDIR_ON_OPEN']='EMPTY_DIR'
@@ -18,17 +20,58 @@ import pandas as pd
 
 from ts_process_group import stac_records_for_plot, group_records
 from ts_process_group import process_group
+from ts_process_group import get_qa_rejects_list
 
 from ts_log_stuff import format_plot_data, log_file_name
 
-def process_plot(plot: Tuple[Any, ...], params: dict) -> None:
+def pickle_to_s3(the_object, the_key):
+    bucket='dev-nlcd-developer'
+    #key='your_pickle_filename.pkl'
+    key=the_key
+    pickle_byte_obj = pickle.dumps(the_object)
+    s3_resource = boto3.resource('s3')
+    s3_resource.Object(bucket,key).put(Body=pickle_byte_obj)
+    print('Writing pickle:', bucket, key)
+
+def pickle_groups(year, plot, groups):
+    print(plot)
+    print(plot.plot_id)
+
+    number_str = str(plot.plot_id).zfill(4)
+    fn = f'timesync/{year}/audit/{year}_{number_str}_{plot.project_id}.p'
+
+    bucket='dev-nlcd-developer'
+    #key='your_pickle_filename.pkl'
+    key=fn
+    pickle_to_s3(groups, key)
+
+    # pickle_byte_obj = pickle.dumps(groups)
+    # s3_resource = boto3.resource('s3')
+    # s3_resource.Object(bucket,key).put(Body=pickle_byte_obj)
+    # print('Writing pickle:', bucket, key)
+
+
+def process_plot(year, plot: Tuple[Any, ...], params: dict) -> None:
     """
     Process an individual plot
     """
     print('called process_plot')
     groups = group_records(stac_records_for_plot(plot, params))
+    pickle_groups(year, plot,groups)
     for group in groups:
         process_group(group, plot, params)
+
+def save_qa_rejects(year,plot):
+
+    number_str = str(plot.plot_id).zfill(4)
+    fn = f'timesync/{year}/audit/{year}_{number_str}_{plot.project_id}_qa_rejects.p'
+
+    qa_rejects = get_qa_rejects_list()
+
+    bucket='dev-nlcd-developer'
+    #key='your_pickle_filename.pkl'
+    key=fn
+    pickle_to_s3(qa_rejects, key)
 
 
 def process_on_local(project_dir, project_id, plot_id, region, chip_size, year, x, y):
@@ -59,7 +102,8 @@ def process_on_local(project_dir, project_id, plot_id, region, chip_size, year, 
     plots_df = pd.DataFrame(plot_l)  # plots is misnomer - only one defined by x and y
     for plot in plots_df.itertuples():
         print(plot)
-        process_plot(plot, params)
+        process_plot(year, plot, params)
+        save_qa_rejects(year, plot)
         print('Success tracking goes here')
   
 
@@ -74,7 +118,7 @@ def timesync_data_extraction(project_dir, project_id, plot_id, region, chip_size
 def run_timesync(plot_id, year, x, y, project_id):
 
     config_params = {
-        'project_dir': f's3://dev-nlcd-developer/timesync/{project_id}/', 
+        'project_dir': f's3://dev-nlcd-developer/timesync/{year}/', 
         'project_id': project_id,
         'plot_id': plot_id,
         'region': 'CU', 

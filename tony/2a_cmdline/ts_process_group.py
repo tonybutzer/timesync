@@ -29,6 +29,14 @@ QA_WATER = 7
 CONCURRENT_STAC_QUERIES = 2  # Prevents workers from consuming too much memory
 LANDSAT_ARD_C2_FILL_VALUE = 0
 
+# QA Rejects dates list
+
+QA_Rejects = []
+
+def get_qa_rejects_list():
+    global QA_Rejects
+    return QA_Rejects
+
 
 # This AWS stuff could likely be simplified more to come ... -tony
 
@@ -189,10 +197,23 @@ def read_bands(record: dict, bands: List[str], plot: Tuple[Any, ...], width: int
     """
     out = {}
     for band in bands:
-        with rio.open(StacRecord.asset_href(record, band)) as ds:
-            window = centered_window(plot.x, plot.y, width, height, ds)
-            # Get a masked array and fill it to avoid a bug with gdal/rasterio
-            out[band] = ds.read(1, window=window, boundless=True, fill_value=0, masked=True).filled()
+        cnt=20
+        sleep=6
+        while(cnt>0):
+            try:
+                with rio.open(StacRecord.asset_href(record, band)) as ds:
+                    window = centered_window(plot.x, plot.y, width, height, ds)
+                    # Get a masked array and fill it to avoid a bug with gdal/rasterio
+                    out[band] = ds.read(1, window=window, boundless=True, fill_value=0, masked=True).filled()
+                    print('.',end='', flush=True)
+                    break
+            except rasterio.errors.RasterioIOError:
+                print("Failure Failure Unexpected error:", sys.exc_info()[0])
+                print('oops',cnt)
+                s3_file_name = StacRecord.asset_href(record, band)
+                print('oops',s3_file_name, flush=True)
+                cnt = cnt - 1
+                sleep(sleeptime)
     return out
 
 
@@ -200,9 +221,23 @@ def read_qa_at_plot(record: dict, plot: Tuple[Any, ...]) -> int:
     """
     Read a single pixel at the plot location
     """
-    with rio.open(StacRecord.asset_href(record, 'qa_pixel')) as ds:
-        window = single_pixel_window(plot.x, plot.y, ds)
-        out = ds.read(1, window=window, boundless=False)
+    cnt=20
+    sleep=6
+    while(cnt>0):
+        try:
+            with rio.open(StacRecord.asset_href(record, 'qa_pixel')) as ds:
+                window = single_pixel_window(plot.x, plot.y, ds)
+                out = ds.read(1, window=window, boundless=False)
+                break
+        except rasterio.errors.RasterioIOError:
+            print("Failure Failure QA PIXEL Unexpected error:", sys.exc_info()[0])
+            print('oops',cnt)
+            s3_file_name = StacRecord.asset_href(record, 'qa_pixel')
+            print('oops',s3_file_name, flush=True)
+            cnt = cnt - 1
+            sleep(sleeptime)
+
+            
     if out.size == 0:
         return 1  # Treat values outside the spatial extent as fill
     return out.item()
@@ -439,6 +474,7 @@ def process_group(group: List[dict], plot: Tuple[Any, ...], params: dict) -> Non
     """
     Process a group of STAC records associated with a plot into output PNGs
     """
+    global QA_Rejects
     fs = fsspec.filesystem('s3', anon=False, requester_pays=True)
 
     # Set up the output filenames and (as applicable) directories
@@ -453,6 +489,9 @@ def process_group(group: List[dict], plot: Tuple[Any, ...], params: dict) -> Non
         # Optionally, write an entry for an invalid pixel. This had been previous functionality,
         # but because TimeSync does not expect this entry, I am disabling it.
         # df_to_csv(build_df(invalid_pixel(), group[0], plot.project_id, plot.plot_id), params, output)
+        for record in group:
+            print('Failed qa:', record['properties']['datetime'])
+            QA_Rejects.append(record['properties']['datetime'])
         return
 
     # Read and combine the data records
