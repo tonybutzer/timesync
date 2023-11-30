@@ -1,9 +1,0 @@
-{'project_id': '3132', 'year': '1993', 'x': -521880, 'y': 1273260, 'plot_id': '47', 'strata': '41'}
-Pandas(Index=0, project_id='3132', plot_id='47', x=-521880, y=1273260)
-called process_plot
-Pandas(Index=0, project_id='3132', plot_id='47', x=-521880, y=1273260)
-47
-Writing pickle: dev-nlcd-developer timesync/1993/audit/1993_0047_3132.p
-Failed qa: 1993-01-17T16:42:24.6660060Z
-Failed qa: 1993-01-24T16:48:03.955547Z
-.......

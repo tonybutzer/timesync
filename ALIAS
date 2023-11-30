@@ -1,0 +1,3 @@
+#
+alias co='(cd ~/opt/observe/3_instance_prototypes/; ./compute.py)'
+alias wa='(cd ~/opt/observe/4_slurm_helper_df/ ; make)'
