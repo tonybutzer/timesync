@@ -1,0 +1,7 @@
+{'project_id': '3132', 'year': '2001', 'x': -603900, 'y': 1222800, 'plot_id': '253', 'strata': '41'}
+Pandas(Index=0, project_id='3132', plot_id='253', x=-603900, y=1222800)
+called process_plot
+Pandas(Index=0, project_id='3132', plot_id='253', x=-603900, y=1222800)
+253
+Writing pickle: dev-nlcd-developer timesync/2001/audit/2001_0253_3132.p
+..............

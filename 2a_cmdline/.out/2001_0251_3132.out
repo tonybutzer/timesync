@@ -1,0 +1,23 @@
+{'project_id': '3132', 'year': '2001', 'x': -468300, 'y': 1268790, 'plot_id': '251', 'strata': '41'}
+Pandas(Index=0, project_id='3132', plot_id='251', x=-468300, y=1268790)
+called process_plot
+Pandas(Index=0, project_id='3132', plot_id='251', x=-468300, y=1268790)
+251
+Writing pickle: dev-nlcd-developer timesync/2001/audit/2001_0251_3132.p
+Failed qa: 2001-01-06T17:16:57.737614Z
+..............Failed qa: 2001-01-08T17:04:37.379015Z
+Failed qa: 2001-01-09T16:47:58.180510Z
+Failed qa: 2001-01-14T17:06:10.595044Z
+..............Failed qa: 2001-01-22T17:17:03.172713Z
+Failed qa: 2001-01-23T17:00:38.5070190Z
+Failed qa: 2001-01-23T17:00:38.5070190Z
+Failed qa: 2001-01-24T17:04:41.747364Z
+Failed qa: 2001-01-25T16:48:04.768076Z
+Failed qa: 2001-01-30T17:06:17.504088Z
+..............Failed qa: 2001-02-01T16:54:08.851566Z
+Failed qa: 2001-02-02T16:58:38.883381Z
+Failed qa: 2001-02-07T17:16:43.619255Z
+..............Failed qa: 2001-02-09T17:04:34.876764Z
+Failed qa: 2001-02-10T16:48:12.425044Z
+Failed qa: 2001-02-15T17:06:19.020025Z
+..............
