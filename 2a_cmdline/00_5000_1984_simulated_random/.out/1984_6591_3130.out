@@ -1,0 +1,15 @@
+{'project_id': '3130', 'year': '1984', 'x': -1787760, 'y': 1255140, 'plot_id': '6591', 'strata': '41'}
+Pandas(Index=0, project_id='3130', plot_id='6591', x=-1787760, y=1255140)
+called process_plot
+Pandas(Index=0, project_id='3130', plot_id='6591', x=-1787760, y=1255140)
+6591
+Writing pickle: dev-nlcd-developer timesync/1984/audit/1984_6591_3130.p
+Failed qa: 1984-04-06T17:37:08.424538Z
+..............Failed qa: 1984-05-08T17:37:46.855051Z
+Failed qa: 1984-05-15T17:43:35.4710190Z
+.......Failed qa: 1984-06-09T17:38:35.896541Z
+Failed qa: 1984-06-16T17:44:41.719588Z
+Failed qa: 1984-06-25T17:38:38.156572Z
+..............Failed qa: 1984-10-22T17:46:24.706065Z
+.......Writing pickle: dev-nlcd-developer timesync/1984/audit/1984_6591_3130_qa_rejects.p
+Success tracking goes here

@@ -1,0 +1,27 @@
+{'project_id': '3130', 'year': '1984', 'x': 487650, 'y': 2613750, 'plot_id': '11886', 'strata': '41'}
+Pandas(Index=0, project_id='3130', plot_id='11886', x=487650, y=2613750)
+called process_plot
+Pandas(Index=0, project_id='3130', plot_id='11886', x=487650, y=2613750)
+11886
+Writing pickle: dev-nlcd-developer timesync/1984/audit/1984_11886_3130.p
+..............Failed qa: 1984-04-18T16:19:25.087522Z
+Failed qa: 1984-04-20T16:07:03.396038Z
+.......Failed qa: 1984-05-04T16:19:29.750557Z
+Failed qa: 1984-05-06T16:07:12.355565Z
+.......Failed qa: 1984-05-20T16:20:00.626009Z
+Failed qa: 1984-05-22T16:07:42.266544Z
+.......Failed qa: 1984-06-05T16:20:10.9380810Z
+Failed qa: 1984-06-07T16:07:51.5490630Z
+.......Failed qa: 1984-06-21T16:20:38.495562Z
+.......Failed qa: 1984-07-07T16:20:48.719043Z
+Failed qa: 1984-07-09T16:08:28.125066Z
+.......Failed qa: 1984-07-23T16:21:03.1850560Z
+Failed qa: 1984-08-01T16:15:11.2420750Z
+Failed qa: 1984-08-08T16:21:48.072018Z
+.......Failed qa: 1984-09-11T16:09:58.982028Z
+.......Failed qa: 1984-09-27T16:09:48.2230560Z
+.......Failed qa: 1984-10-13T16:09:58.157515Z
+.......Failed qa: 1984-10-29T16:09:52.763525Z
+.......Failed qa: 1984-11-12T16:22:07.192510Z
+.......Writing pickle: dev-nlcd-developer timesync/1984/audit/1984_11886_3130_qa_rejects.p
+Success tracking goes here

@@ -1,0 +1,44 @@
+{'project_id': '3130', 'year': '1984', 'x': -1993500, 'y': 1813320, 'plot_id': '5551', 'strata': '41'}
+Pandas(Index=0, project_id='3130', plot_id='5551', x=-1993500, y=1813320)
+called process_plot
+Pandas(Index=0, project_id='3130', plot_id='5551', x=-1993500, y=1813320)
+5551
+Writing pickle: dev-nlcd-developer timesync/1984/audit/1984_5551_3130.p
+..............Failed qa: 1984-04-25T18:06:51.144022Z
+Failed qa: 1984-04-25T18:07:02.9880250Z
+Failed qa: 1984-04-27T17:54:40.7010810Z
+Failed qa: 1984-05-04T18:00:58.303535Z
+Failed qa: 1984-05-04T18:01:22.1340560Z
+Failed qa: 1984-05-11T18:07:23.2790440Z
+Failed qa: 1984-05-11T18:07:35.265562Z
+Failed qa: 1984-05-13T17:55:17.593522Z
+..............Failed qa: 1984-05-27T18:07:38.661544Z
+Failed qa: 1984-05-27T18:08:02.492054Z
+Failed qa: 1984-05-29T17:55:31.6540440Z
+Failed qa: 1984-05-29T17:55:43.569522Z
+..............Failed qa: 1984-06-12T18:08:09.4890440Z
+Failed qa: 1984-06-12T18:08:21.404066Z
+Failed qa: 1984-06-14T17:55:49.8660880Z
+Failed qa: 1984-06-14T17:56:01.781560Z
+..............Failed qa: 1984-06-28T18:07:58.9090250Z
+Failed qa: 1984-06-28T18:08:46.5690880Z
+Failed qa: 1984-06-30T17:56:02.3520060Z
+Failed qa: 1984-06-30T17:56:14.267022Z
+..............Failed qa: 1984-07-14T18:08:34.6090690Z
+Failed qa: 1984-07-14T18:08:46.524535Z
+Failed qa: 1984-07-16T17:56:17.4290500Z
+Failed qa: 1984-07-16T17:56:17.4290500Z
+Failed qa: 1984-07-23T18:02:19.7930810Z
+..............Failed qa: 1984-09-16T18:09:36.5640810Z
+Failed qa: 1984-09-16T18:10:24.2250810Z
+Failed qa: 1984-10-02T18:09:36.7760560Z
+Failed qa: 1984-10-02T18:10:24.4380000Z
+Failed qa: 1984-10-04T17:57:38.7150940Z
+Failed qa: 1984-10-04T17:57:50.630575Z
+Failed qa: 1984-10-18T18:09:45.681035Z
+Failed qa: 1984-10-18T18:10:09.440528Z
+..............Failed qa: 1984-11-12T18:03:11.6060130Z
+Failed qa: 1984-11-19T18:09:46.0320690Z
+Failed qa: 1984-11-19T18:09:58.019072Z
+..............Writing pickle: dev-nlcd-developer timesync/1984/audit/1984_5551_3130_qa_rejects.p
+Success tracking goes here

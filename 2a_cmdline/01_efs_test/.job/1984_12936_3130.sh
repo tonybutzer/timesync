@@ -1,0 +1,13 @@
+#!/bin/bash
+#SBATCH --account=butzer
+#SBATCH --time=00:20:00
+#SBATCH -N 1
+#SBATCH -n 1
+#SBATCH -c 1
+#SBATCH --mail-type=FAIL
+#SBATCH --mail-user=butzer@contractor.usgs.gov
+#SBATCH --job-name=1984_12936_3130.job
+#SBATCH --output=.out/1984_12936_3130.out
+#SBATCH --error=.out/1984_12936_3130.err
+source /efs/mambaforge/bin/activate city
+python3 ts_user.py --year 1984 --x 772440 --y 1727790 --plot_id 12936 3130

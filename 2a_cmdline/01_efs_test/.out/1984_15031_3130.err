@@ -1,0 +1,65 @@
+Traceback (most recent call last):
+  File "/efs/mambaforge/envs/city/lib/python3.11/site-packages/s3fs/core.py", line 113, in _error_wrapper
+    return await func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/efs/mambaforge/envs/city/lib/python3.11/site-packages/aiobotocore/client.py", line 383, in _make_api_call
+    raise error_class(parsed_response, operation_name)
+botocore.exceptions.ClientError: An error occurred (AccessDenied) when calling the PutObject operation: Access Denied
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/ec2-user/opt/timesync/2a_cmdline/01_efs_test/ts_main_loop.py", line 125, in timesync_data_extraction
+    process_on_local(project_dir, project_id, plot_id, region, chip_size, year, x, y)
+  File "/home/ec2-user/opt/timesync/2a_cmdline/01_efs_test/ts_main_loop.py", line 106, in process_on_local
+    process_plot(year, plot, params)
+  File "/home/ec2-user/opt/timesync/2a_cmdline/01_efs_test/ts_main_loop.py", line 63, in process_plot
+    process_group(group, plot, params)
+  File "/home/ec2-user/opt/timesync/2a_cmdline/01_efs_test/ts_process_group.py", line 527, in process_group
+    df_to_csv(build_df(spectral_data(combined_data), group[0], plot.project_id, plot.plot_id), params, output)
+  File "/home/ec2-user/opt/timesync/2a_cmdline/01_efs_test/ts_process_group.py", line 370, in df_to_csv
+    with fs.open(output['scsv'], 'w') as f:
+  File "/efs/mambaforge/envs/city/lib/python3.11/site-packages/fsspec/spec.py", line 1942, in close
+    self.flush(force=True)
+  File "/efs/mambaforge/envs/city/lib/python3.11/site-packages/fsspec/spec.py", line 1813, in flush
+    if self._upload_chunk(final=force) is not False:
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/efs/mambaforge/envs/city/lib/python3.11/site-packages/s3fs/core.py", line 2288, in _upload_chunk
+    self.commit()
+  File "/efs/mambaforge/envs/city/lib/python3.11/site-packages/s3fs/core.py", line 2306, in commit
+    write_result = self._call_s3("put_object", **kw)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/efs/mambaforge/envs/city/lib/python3.11/site-packages/s3fs/core.py", line 2151, in _call_s3
+    return self.fs.call_s3(method, self.s3_additional_kwargs, *kwarglist, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/efs/mambaforge/envs/city/lib/python3.11/site-packages/fsspec/asyn.py", line 118, in wrapper
+    return sync(self.loop, func, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/efs/mambaforge/envs/city/lib/python3.11/site-packages/fsspec/asyn.py", line 103, in sync
+    raise return_result
+  File "/efs/mambaforge/envs/city/lib/python3.11/site-packages/fsspec/asyn.py", line 56, in _runner
+    result[0] = await coro
+                ^^^^^^^^^^
+  File "/efs/mambaforge/envs/city/lib/python3.11/site-packages/s3fs/core.py", line 348, in _call_s3
+    return await _error_wrapper(
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/efs/mambaforge/envs/city/lib/python3.11/site-packages/s3fs/core.py", line 140, in _error_wrapper
+    raise err
+PermissionError: Access Denied
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/ec2-user/opt/timesync/2a_cmdline/01_efs_test/ts_user.py", line 43, in <module>
+    command_line_runner()
+  File "/home/ec2-user/opt/timesync/2a_cmdline/01_efs_test/ts_user.py", line 36, in command_line_runner
+    run_timesync(plot_id, year, x, y, project_id)
+  File "/home/ec2-user/opt/timesync/2a_cmdline/01_efs_test/ts_main_loop.py", line 144, in run_timesync
+    timesync_data_extraction(**config_params)  # docker and the cluster will not need dask
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ec2-user/opt/timesync/2a_cmdline/01_efs_test/ts_main_loop.py", line 127, in timesync_data_extraction
+    PrintException()
+  File "/home/ec2-user/opt/timesync/2a_cmdline/01_efs_test/ts_main_loop.py", line 115, in PrintException
+    linecache.checkcache(filename)
+    ^^^^^^^^^
+NameError: name 'linecache' is not defined

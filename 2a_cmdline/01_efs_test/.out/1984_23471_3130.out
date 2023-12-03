@@ -1,0 +1,29 @@
+{'project_id': '3130', 'year': '1984', 'x': -315570, 'y': 777300, 'plot_id': '23471', 'strata': '41'}
+Pandas(Index=0, project_id='3130', plot_id='23471', x=-315570, y=777300)
+called process_plot
+Pandas(Index=0, project_id='3130', plot_id='23471', x=-315570, y=777300)
+23471
+Writing pickle: dev-nlcd-developer timesync/1984/audit/1984_23471_3130.p
+Failed qa: 1984-04-07T16:42:19.183085Z
+Failed qa: 1984-04-09T16:29:58.211019Z
+Failed qa: 1984-05-27T16:30:44.955025Z
+Failed qa: 1984-06-03T16:36:52.8550060Z
+Failed qa: 1984-06-03T16:36:52.8550060Z
+Failed qa: 1984-06-12T16:31:03.957050Z
+Failed qa: 1984-06-19T16:37:09.1850940Z
+Failed qa: 1984-06-19T16:37:09.1850940Z
+Failed qa: 1984-06-28T16:31:17.175076Z
+Failed qa: 1984-07-14T16:31:26.934053Z
+Failed qa: 1984-08-31T16:32:51.559540Z
+Failed qa: 1984-09-07T16:38:52.2710880Z
+Failed qa: 1984-09-07T16:38:52.2710880Z
+Failed qa: 1984-09-23T16:38:54.0950130Z
+Failed qa: 1984-09-23T16:38:54.0950130Z
+Failed qa: 1984-10-09T16:38:52.9950190Z
+Failed qa: 1984-10-09T16:38:52.9950190Z
+Failed qa: 1984-10-18T16:32:52.062550Z
+Failed qa: 1984-11-01T16:44:56.1640940Z
+Failed qa: 1984-11-03T16:32:45.655047Z
+..............Failure Failure writing PNG file
+Failure Failure writing PNG file
+Failure Failure writing PNG file

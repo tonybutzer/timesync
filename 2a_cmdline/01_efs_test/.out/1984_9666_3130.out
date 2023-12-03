@@ -1,0 +1,13 @@
+{'project_id': '3130', 'year': '1984', 'x': 105060, 'y': 1923000, 'plot_id': '9666', 'strata': '41'}
+Pandas(Index=0, project_id='3130', plot_id='9666', x=105060, y=1923000)
+called process_plot
+Pandas(Index=0, project_id='3130', plot_id='9666', x=105060, y=1923000)
+9666
+Writing pickle: dev-nlcd-developer timesync/1984/audit/1984_9666_3130.p
+Failed qa: 1984-04-18T16:21:24.597541Z
+Failed qa: 1984-05-18T16:34:18.343047Z
+Failed qa: 1984-05-20T16:21:48.0780000Z
+Failed qa: 1984-06-03T16:34:41.572591Z
+.......Failure Failure writing PNG file
+Failure Failure writing PNG file
+Failure Failure writing PNG file
