@@ -1,9 +1,0 @@
-{'project_id': '3130', 'year': '1984', 'x': -992790, 'y': 1345920, 'plot_id': '5251', 'strata': '41'}
-Pandas(Index=0, project_id='3130', plot_id='5251', x=-992790, y=1345920)
-called process_plot
-Pandas(Index=0, project_id='3130', plot_id='5251', x=-992790, y=1345920)
-5251
-Writing pickle: dev-nlcd-developer timesync/1984/audit/1984_5251_3130.p
-.......Failure Failure writing PNG file
-Failure Failure writing PNG file
-Failure Failure writing PNG file

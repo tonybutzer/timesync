@@ -1,0 +1,46 @@
+{'project_id': '3130', 'year': '1984', 'x': 596490, 'y': 2589420, 'plot_id': '1906', 'strata': '41'}
+Pandas(Index=0, project_id='3130', plot_id='1906', x=596490, y=2589420)
+called process_plot
+Pandas(Index=0, project_id='3130', plot_id='1906', x=596490, y=2589420)
+1906
+Directory '/efs/timesync/1984/audit/' already exists.
+Data has been pickled and saved to '/efs/timesync/1984/audit/1984_1906_3130.p'.
+.......Failed qa: 1984-04-06T15:54:52.2370560Z
+Failed qa: 1984-04-11T16:13:02.0740880Z
+.......Failed qa: 1984-04-22T15:54:53.2440750Z
+Failed qa: 1984-04-27T16:13:12.461051Z
+Failed qa: 1984-04-29T16:00:49.671050Z
+.......Failed qa: 1984-05-15T16:01:07.4390440Z
+.......Failed qa: 1984-05-29T16:13:51.2920130Z
+Failed qa: 1984-05-31T16:01:44.318556Z
+Failed qa: 1984-06-07T16:07:51.5490630Z
+Failed qa: 1984-06-09T15:55:55.8830440Z
+Failed qa: 1984-06-14T16:14:09.5110060Z
+Failed qa: 1984-06-16T16:02:01.702069Z
+Failed qa: 1984-06-25T15:56:10.1260810Z
+Failed qa: 1984-06-30T16:14:22.1140560Z
+Failed qa: 1984-07-02T16:02:13.536047Z
+.......Failed qa: 1984-07-11T15:56:19.3000810Z
+Failed qa: 1984-07-16T16:14:36.9910750Z
+Failed qa: 1984-07-18T16:02:31.742562Z
+Failed qa: 1984-07-27T15:56:52.1860880Z
+Failed qa: 1984-08-01T16:15:11.2420750Z
+Failed qa: 1984-08-03T16:03:05.608081Z
+Failed qa: 1984-08-12T15:57:24.4170500Z
+Failed qa: 1984-08-19T16:03:36.414047Z
+.......Failed qa: 1984-08-28T15:57:33.781041Z
+Failed qa: 1984-09-04T16:03:46.740028Z
+.......Failed qa: 1984-09-13T15:57:49.4510440Z
+Failed qa: 1984-09-20T16:03:49.136541Z
+Failed qa: 1984-09-27T16:09:48.2230560Z
+Failed qa: 1984-09-29T15:57:50.2270190Z
+Failed qa: 1984-10-04T16:15:58.4900690Z
+Failed qa: 1984-10-06T16:03:48.604034Z
+.......Failed qa: 1984-10-20T16:15:55.1720250Z
+Failed qa: 1984-10-22T16:03:56.7490380Z
+.......Failed qa: 1984-10-31T15:57:42.1390690Z
+Failed qa: 1984-11-07T16:03:37.729531Z
+Failed qa: 1984-11-21T16:15:56.671541Z
+Failed qa: 1984-11-23T16:03:47.3810500Z
+Data has been pickled and saved to '/efs/timesync/1984/audit/1984_1906_3130_qa_rejects.p'.
+Success tracking goes here

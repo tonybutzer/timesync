@@ -1,0 +1,24 @@
+{'project_id': '3130', 'year': '1984', 'x': -1061040, 'y': 1565580, 'plot_id': '21976', 'strata': '41'}
+Pandas(Index=0, project_id='3130', plot_id='21976', x=-1061040, y=1565580)
+called process_plot
+Pandas(Index=0, project_id='3130', plot_id='21976', x=-1061040, y=1565580)
+21976
+Directory '/efs/timesync/1984/audit/' already exists.
+Data has been pickled and saved to '/efs/timesync/1984/audit/1984_21976_3130.p'.
+Failed qa: 1984-04-17T17:17:37.7460380Z
+.......Failed qa: 1984-05-05T17:05:46.8400060Z
+Failed qa: 1984-05-12T17:11:47.8550750Z
+.......Failed qa: 1984-05-21T17:06:17.1720440Z
+..............Failed qa: 1984-06-06T17:06:26.816538Z
+Failed qa: 1984-06-13T17:12:33.1550630Z
+.......Failed qa: 1984-06-22T17:06:54.0510130Z
+..............Failed qa: 1984-07-08T17:07:04.0660440Z
+Failed qa: 1984-07-15T17:12:59.3690130Z
+Failed qa: 1984-07-24T17:07:20.157554Z
+Failed qa: 1984-08-25T17:08:18.770575Z
+Failed qa: 1984-09-26T17:08:12.6810880Z
+Failed qa: 1984-11-04T17:14:25.390053Z
+Failed qa: 1984-11-13T17:08:21.3340380Z
+Failed qa: 1984-11-20T17:14:32.9130940Z
+.......Data has been pickled and saved to '/efs/timesync/1984/audit/1984_21976_3130_qa_rejects.p'.
+Success tracking goes here

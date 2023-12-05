@@ -1,0 +1,47 @@
+{'project_id': '3130', 'year': '1984', 'x': 737730, 'y': 1296300, 'plot_id': '5811', 'strata': '41'}
+Pandas(Index=0, project_id='3130', plot_id='5811', x=737730, y=1296300)
+called process_plot
+Pandas(Index=0, project_id='3130', plot_id='5811', x=737730, y=1296300)
+5811
+Directory '/efs/timesync/1984/audit/' already exists.
+Data has been pickled and saved to '/efs/timesync/1984/audit/1984_5811_3130.p'.
+Failed qa: 1984-03-15T15:46:21.520056Z
+Failed qa: 1984-03-25T15:53:12.9140000Z
+Failed qa: 1984-03-25T15:53:12.9140000Z
+Failed qa: 1984-04-06T15:58:15.296572Z
+Failed qa: 1984-04-06T15:58:03.3100560Z
+Failed qa: 1984-04-08T15:45:54.209532Z
+Failed qa: 1984-04-15T15:52:17.9260380Z
+Failed qa: 1984-04-15T15:52:17.9260380Z
+Failed qa: 1984-04-22T15:58:16.304062Z
+Failed qa: 1984-04-22T15:58:04.3170940Z
+Failed qa: 1984-04-24T15:45:54.225509Z
+..............Failed qa: 1984-05-08T15:58:17.7670250Z
+Failed qa: 1984-05-08T15:58:17.7670250Z
+Failed qa: 1984-05-24T15:58:46.6650190Z
+Failed qa: 1984-05-24T15:58:46.6650190Z
+Failed qa: 1984-05-26T15:46:39.877547Z
+Failed qa: 1984-06-11T15:46:59.277569Z
+Failed qa: 1984-06-16T16:05:12.702528Z
+..............Failed qa: 1984-06-27T15:47:12.846510Z
+..............Failed qa: 1984-07-11T15:59:42.287037Z
+Failed qa: 1984-07-11T15:59:30.3720190Z
+Failed qa: 1984-07-13T15:47:11.0650060Z
+Failed qa: 1984-07-29T15:47:45.8100940Z
+Failed qa: 1984-08-28T16:01:20.5970560Z
+Failed qa: 1984-09-04T16:06:57.740503Z
+..............Failed qa: 1984-09-13T16:01:12.438550Z
+Failed qa: 1984-09-29T16:01:13.215519Z
+Failed qa: 1984-10-01T15:48:51.433584Z
+..............Failed qa: 1984-10-15T16:01:22.8630750Z
+Failed qa: 1984-10-17T15:48:48.732051Z
+Failed qa: 1984-10-22T16:06:43.8510060Z
+Failed qa: 1984-10-24T15:55:09.2670310Z
+Failed qa: 1984-10-24T15:55:09.2670310Z
+Failed qa: 1984-10-31T16:01:05.130572Z
+Failed qa: 1984-10-31T16:00:53.2150750Z
+Failed qa: 1984-11-07T16:06:48.735550Z
+..............Failed qa: 1984-11-18T15:48:36.738525Z
+Failed qa: 1984-11-23T16:06:46.474047Z
+..............Data has been pickled and saved to '/efs/timesync/1984/audit/1984_5811_3130_qa_rejects.p'.
+Success tracking goes here
