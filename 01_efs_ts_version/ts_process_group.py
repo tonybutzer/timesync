@@ -461,7 +461,7 @@ def stac_records_for_plot(plot: Tuple[Any, ...], params: dict) -> List[dict]:
     query_results = []
     roi = centered_bounds(plot.x, plot.y, params['chip_size'][0], params['chip_size'][1])
     my_year = params['year']
-    my_dates = f'{my_year}-01-01/{my_year}-12-01'
+    my_dates = f'{my_year}-01-01/{my_year}-12-31'
     for h, v in determine_hvs(roi, region=params['region']):
         query_results.extend(query_stac(build_query(h, v, region=params['region'], datetime=my_dates)))
     return query_results
