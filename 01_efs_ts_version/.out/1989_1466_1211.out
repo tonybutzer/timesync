@@ -1,0 +1,45 @@
+{'project_id': '1211', 'year': '1989', 'x': -86850, 'y': 1323720, 'plot_id': '1466', 'strata': '41'}
+Pandas(Index=0, project_id='1211', plot_id='1466', x=-86850, y=1323720)
+called process_plot
+Pandas(Index=0, project_id='1211', plot_id='1466', x=-86850, y=1323720)
+1466
+Directory '/efs/timesync/1989/audit/' already exists.
+Data has been pickled and saved to '/efs/timesync/1989/audit/1989_1466_1211.p'.
+Failed qa: 1989-01-10T16:26:02.954069Z
+.......Failed qa: 1989-01-24T16:37:44.029522Z
+Failed qa: 1989-01-26T16:25:46.862566Z
+Failed qa: 1989-02-09T16:37:46.003062Z
+Failed qa: 1989-02-11T16:25:49.829560Z
+Failed qa: 1989-02-18T16:31:22.4170310Z
+Failed qa: 1989-02-25T16:37:38.178044Z
+.......Failed qa: 1989-03-13T16:37:10.148038Z
+.......Failed qa: 1989-03-31T16:24:49.799000Z
+.......Failed qa: 1989-04-16T16:24:51.909547Z
+.......Failed qa: 1989-04-30T16:36:34.666565Z
+Failed qa: 1989-05-02T16:24:35.956515Z
+.......Failed qa: 1989-05-16T16:36:16.033554Z
+Failed qa: 1989-06-03T16:24:04.472562Z
+.......Failed qa: 1989-06-17T16:35:37.925038Z
+Failed qa: 1989-06-19T16:23:38.694535Z
+.......Failed qa: 1989-07-03T16:35:24.899066Z
+Failed qa: 1989-07-05T16:23:23.874535Z
+Failed qa: 1989-07-19T16:35:04.164507Z
+Failed qa: 1989-07-21T16:23:15.9900060Z
+Failed qa: 1989-07-27T16:41:17.007525Z
+.......Failed qa: 1989-08-04T16:34:44.844509Z
+Failed qa: 1989-08-06T16:22:44.486529Z
+Failed qa: 1989-08-12T16:41:17.410047Z
+.......Failed qa: 1989-08-20T16:34:22.057557Z
+Failed qa: 1989-08-22T16:22:22.541569Z
+Failed qa: 1989-08-28T16:41:16.010528Z
+Failed qa: 1989-08-29T16:28:37.2040810Z
+Failed qa: 1989-09-05T16:34:02.203041Z
+Failed qa: 1989-09-23T16:21:33.378081Z
+.......Failed qa: 1989-10-07T16:33:19.943044Z
+Failed qa: 1989-10-09T16:21:16.692535Z
+.......Failed qa: 1989-10-23T16:32:36.494069Z
+Failed qa: 1989-10-25T16:20:34.903034Z
+.......Failed qa: 1989-11-08T16:32:18.575547Z
+Failed qa: 1989-11-10T16:20:15.137544Z
+.......Data has been pickled and saved to '/efs/timesync/1989/audit/1989_1466_1211_qa_rejects.p'.
+Success tracking goes here

@@ -1,0 +1,44 @@
+{'project_id': '1211', 'year': '1989', 'x': 207840, 'y': 2372220, 'plot_id': '2224', 'strata': '41'}
+Pandas(Index=0, project_id='1211', plot_id='2224', x=207840, y=2372220)
+called process_plot
+Pandas(Index=0, project_id='1211', plot_id='2224', x=207840, y=2372220)
+2224
+Directory '/efs/timesync/1989/audit/' already exists.
+Data has been pickled and saved to '/efs/timesync/1989/audit/1989_2224_1211.p'.
+Failed qa: 1989-01-08T16:35:51.9590380Z
+Failed qa: 1989-01-10T16:23:15.784563Z
+Failed qa: 1989-01-17T16:29:28.9390440Z
+Failed qa: 1989-01-24T16:35:08.6180380Z
+Failed qa: 1989-01-26T16:22:59.613522Z
+Failed qa: 1989-02-09T16:35:22.711015Z
+Failed qa: 1989-02-11T16:23:02.570044Z
+.......Failed qa: 1989-02-25T16:35:26.9350250Z
+Failed qa: 1989-02-27T16:23:03.1970130Z
+.......Failed qa: 1989-03-22T16:28:22.5240130Z
+Failed qa: 1989-03-31T16:22:14.7860380Z
+.......Failed qa: 1989-04-16T16:22:04.757053Z
+.......Failed qa: 1989-04-30T16:33:59.3500310Z
+Failed qa: 1989-05-02T16:21:48.795053Z
+.......Failed qa: 1989-05-16T16:33:52.696509Z
+..............Failed qa: 1989-06-17T16:33:14.570537Z
+Failed qa: 1989-06-19T16:20:51.506057Z
+.......Failed qa: 1989-07-03T16:33:01.679532Z
+Failed qa: 1989-07-05T16:20:36.819538Z
+Failed qa: 1989-07-19T16:32:41.009047Z
+Failed qa: 1989-07-21T16:20:17.078515Z
+Failed qa: 1989-07-27T16:38:53.830053Z
+.......Failed qa: 1989-08-04T16:32:21.606553Z
+Failed qa: 1989-08-06T16:19:45.4190500Z
+Failed qa: 1989-08-12T16:39:06.0750630Z
+.......Failed qa: 1989-08-20T16:31:58.808022Z
+Failed qa: 1989-08-22T16:19:35.379534Z
+Failed qa: 1989-08-28T16:38:40.7070000Z
+Failed qa: 1989-09-05T16:31:38.945056Z
+.......Failed qa: 1989-09-23T16:18:46.122032Z
+Failed qa: 1989-09-30T16:25:07.3650380Z
+Failed qa: 1989-10-07T16:31:08.6580810Z
+..............Failed qa: 1989-10-23T16:30:13.206044Z
+Failed qa: 1989-10-25T16:17:47.839525Z
+Failed qa: 1989-11-10T16:17:40.1330750Z
+.......Data has been pickled and saved to '/efs/timesync/1989/audit/1989_2224_1211_qa_rejects.p'.
+Success tracking goes here

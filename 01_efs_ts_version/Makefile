@@ -1,9 +1,15 @@
 cat:
 	cat Makefile
 
-charles:
-	../pc_user.py --start_year 1984 --end_year 1984 b4_danika_5000.csv
+clean:
+	rm .out/*
+	rm .job/*
+
+1989: clean
+	./pc_user.py --start_year 1989 --end_year 1989 lcnext_srs5000_final.csv
 
 
-j100:
-	../pc_user.py --start_year 1984 --end_year 1984 just100.csv
+verify:
+	grep -L Success .out/*.out
+	ls .out/*.out | wc
+

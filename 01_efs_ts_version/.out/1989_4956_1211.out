@@ -1,0 +1,39 @@
+{'project_id': '1211', 'year': '1989', 'x': 837750, 'y': 1573620, 'plot_id': '4956', 'strata': '41'}
+Pandas(Index=0, project_id='1211', plot_id='4956', x=837750, y=1573620)
+called process_plot
+Pandas(Index=0, project_id='1211', plot_id='4956', x=837750, y=1573620)
+4956
+Directory '/efs/timesync/1989/audit/' already exists.
+Data has been pickled and saved to '/efs/timesync/1989/audit/1989_4956_1211.p'.
+Failed qa: 1989-01-07T15:54:36.5680500Z
+Failed qa: 1989-01-16T15:48:02.682057Z
+.......Failed qa: 1989-01-30T16:00:19.530531Z
+Failed qa: 1989-02-01T15:47:59.042566Z
+..............Failed qa: 1989-03-03T16:00:01.709578Z
+.......Failed qa: 1989-03-19T15:59:21.792538Z
+Failed qa: 1989-04-06T15:47:05.011538Z
+.......Failed qa: 1989-04-20T15:59:12.188541Z
+Failed qa: 1989-04-22T15:46:49.552066Z
+.......Failed qa: 1989-05-06T15:58:50.0430630Z
+Failed qa: 1989-05-08T15:46:38.070538Z
+Failed qa: 1989-05-15T15:52:50.0780000Z
+Failed qa: 1989-05-22T15:58:54.6490880Z
+Failed qa: 1989-05-24T15:46:19.874018Z
+.......Failed qa: 1989-06-07T15:58:27.786556Z
+Failed qa: 1989-06-09T15:46:02.836050Z
+Failed qa: 1989-06-23T15:57:52.0050560Z
+Failed qa: 1989-06-25T15:45:41.976560Z
+Failed qa: 1989-07-09T15:57:48.178019Z
+Failed qa: 1989-07-11T15:45:24.188016Z
+.......Failed qa: 1989-07-25T15:57:29.167025Z
+Failed qa: 1989-07-27T15:45:05.158047Z
+Failed qa: 1989-08-12T15:44:42.915566Z
+.......Failed qa: 1989-08-26T15:56:46.977510Z
+Failed qa: 1989-08-28T15:44:23.115544Z
+.......Failed qa: 1989-09-13T15:43:49.987544Z
+.......Failed qa: 1989-09-27T15:56:02.164572Z
+Failed qa: 1989-10-06T15:49:54.3320940Z
+Failed qa: 1989-10-15T15:43:05.507509Z
+.......Failed qa: 1989-11-16T15:42:16.6100380Z
+Data has been pickled and saved to '/efs/timesync/1989/audit/1989_4956_1211_qa_rejects.p'.
+Success tracking goes here

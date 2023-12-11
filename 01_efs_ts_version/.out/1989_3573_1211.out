@@ -1,0 +1,44 @@
+{'project_id': '1211', 'year': '1989', 'x': 381330, 'y': 2789340, 'plot_id': '3573', 'strata': '41'}
+Pandas(Index=0, project_id='1211', plot_id='3573', x=381330, y=2789340)
+called process_plot
+Pandas(Index=0, project_id='1211', plot_id='3573', x=381330, y=2789340)
+3573
+Directory '/efs/timesync/1989/audit/' already exists.
+Data has been pickled and saved to '/efs/timesync/1989/audit/1989_3573_1211.p'.
+Failed qa: 1989-01-03T16:15:58.821075Z
+.......Failed qa: 1989-01-17T16:27:53.3700630Z
+.......Failed qa: 1989-02-02T16:27:52.0830880Z
+Failed qa: 1989-02-04T16:15:42.190063Z
+.......Failed qa: 1989-02-18T16:27:59.491503Z
+Failed qa: 1989-02-20T16:15:36.544525Z
+.......Failed qa: 1989-03-06T16:27:39.585063Z
+.......Failed qa: 1989-03-22T16:27:10.9040440Z
+.......Failed qa: 1989-04-07T16:27:10.427532Z
+Failed qa: 1989-04-09T16:15:00.8310060Z
+.......Failed qa: 1989-04-23T16:26:53.674038Z
+Failed qa: 1989-04-25T16:14:18.1240560Z
+.......Failed qa: 1989-05-09T16:26:41.189535Z
+Failed qa: 1989-05-11T16:14:16.189072Z
+Failed qa: 1989-05-27T16:14:01.001535Z
+.......Failed qa: 1989-06-10T16:26:05.743037Z
+Failed qa: 1989-06-12T16:13:27.4640500Z
+.......Failed qa: 1989-06-28T16:13:23.368553Z
+.......Failed qa: 1989-07-14T16:13:03.454525Z
+.......Failed qa: 1989-07-28T16:25:08.930019Z
+Failed qa: 1989-07-30T16:12:32.7920630Z
+.......Failed qa: 1989-08-13T16:24:46.181062Z
+Failed qa: 1989-08-15T16:12:21.145541Z
+Failed qa: 1989-08-29T16:24:38.3760880Z
+Failed qa: 1989-09-14T16:23:50.521538Z
+Failed qa: 1989-09-16T16:11:28.460044Z
+.......Failed qa: 1989-09-30T16:23:43.697575Z
+Failed qa: 1989-10-02T16:11:20.497572Z
+Failed qa: 1989-10-09T16:17:05.8960380Z
+Failed qa: 1989-10-16T16:22:55.2810810Z
+Failed qa: 1989-10-18T16:10:38.382503Z
+.......Failed qa: 1989-11-01T16:22:44.788018Z
+Failed qa: 1989-11-03T16:10:21.547053Z
+Failed qa: 1989-11-17T16:22:07.881562Z
+Failed qa: 1989-11-19T16:09:52.7290440Z
+Data has been pickled and saved to '/efs/timesync/1989/audit/1989_3573_1211_qa_rejects.p'.
+Success tracking goes here

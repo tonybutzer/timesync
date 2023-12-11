@@ -1,0 +1,44 @@
+{'project_id': '1211', 'year': '1989', 'x': -1806600, 'y': 2974200, 'plot_id': '1668', 'strata': '41'}
+Pandas(Index=0, project_id='1211', plot_id='1668', x=-1806600, y=2974200)
+called process_plot
+Pandas(Index=0, project_id='1211', plot_id='1668', x=-1806600, y=2974200)
+1668
+Directory '/efs/timesync/1989/audit/' already exists.
+Data has been pickled and saved to '/efs/timesync/1989/audit/1989_1668_1211.p'.
+Failed qa: 1989-02-02T18:07:20.943544Z
+Failed qa: 1989-02-09T18:13:16.036079Z
+Failed qa: 1989-02-25T18:13:20.266047Z
+.......Failed qa: 1989-03-13T18:13:04.0580690Z
+.......Failed qa: 1989-03-22T18:06:15.821044Z
+.......Failed qa: 1989-04-07T18:06:27.396050Z
+Failed qa: 1989-04-14T18:12:23.029044Z
+.......Failed qa: 1989-04-23T18:06:10.577063Z
+.......Failed qa: 1989-05-08T18:16:36.470078Z
+Failed qa: 1989-05-09T18:05:58.074531Z
+Failed qa: 1989-05-16T18:11:45.947060Z
+.......Failed qa: 1989-05-24T18:16:53.164547Z
+Failed qa: 1989-05-25T18:05:40.675525Z
+Failed qa: 1989-06-01T18:11:34.028053Z
+.......Failed qa: 1989-06-09T18:17:05.9140130Z
+Failed qa: 1989-06-10T18:05:22.559022Z
+Failed qa: 1989-06-15T18:23:17.852029Z
+Failed qa: 1989-06-17T18:11:07.974060Z
+Failed qa: 1989-06-24T18:17:13.696528Z
+Failed qa: 1989-06-25T18:16:44.725066Z
+Failed qa: 1989-07-03T18:10:55.080047Z
+.......Failed qa: 1989-07-11T18:16:48.650563Z
+Failed qa: 1989-07-19T18:10:34.393019Z
+.......Failed qa: 1989-07-27T18:16:47.207044Z
+Failed qa: 1989-07-28T18:04:25.759054Z
+Failed qa: 1989-08-04T18:10:15.031062Z
+.......Failed qa: 1989-08-13T18:04:03.018016Z
+Failed qa: 1989-08-20T18:09:52.199094Z
+Failed qa: 1989-08-29T18:03:43.272038Z
+Failed qa: 1989-09-05T18:09:32.143575Z
+.......Failed qa: 1989-09-19T18:21:13.061047Z
+Failed qa: 1989-09-21T18:09:00.592059Z
+.......Failed qa: 1989-10-07T18:08:49.896026Z
+.......Failed qa: 1989-10-16T18:02:23.904519Z
+Failed qa: 1989-10-23T18:08:30.4140060Z
+.......Data has been pickled and saved to '/efs/timesync/1989/audit/1989_1668_1211_qa_rejects.p'.
+Success tracking goes here

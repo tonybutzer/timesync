@@ -1,0 +1,44 @@
+{'project_id': '1211', 'year': '1989', 'x': 1228920, 'y': 2124690, 'plot_id': '2872', 'strata': '41'}
+Pandas(Index=0, project_id='1211', plot_id='2872', x=1228920, y=2124690)
+called process_plot
+Pandas(Index=0, project_id='1211', plot_id='2872', x=1228920, y=2124690)
+2872
+Directory '/efs/timesync/1989/audit/' already exists.
+Data has been pickled and saved to '/efs/timesync/1989/audit/1989_2872_1211.p'.
+Failed qa: 1989-01-11T15:28:24.903547Z
+.......Failed qa: 1989-01-27T15:28:11.052538Z
+Failed qa: 1989-02-03T15:33:50.2830560Z
+Failed qa: 1989-02-10T15:40:09.837050Z
+Failed qa: 1989-02-12T15:28:13.099035Z
+.......Failed qa: 1989-02-28T15:28:00.440591Z
+Failed qa: 1989-03-07T15:33:47.602563Z
+Failed qa: 1989-03-16T15:27:23.515066Z
+.......Failed qa: 1989-03-30T15:38:57.1800690Z
+.......Failed qa: 1989-04-15T15:39:14.786031Z
+Failed qa: 1989-04-17T15:27:13.398522Z
+.......Failed qa: 1989-05-01T15:38:57.580569Z
+Failed qa: 1989-05-10T15:32:25.9500810Z
+Failed qa: 1989-05-17T15:38:37.317031Z
+Failed qa: 1989-05-19T15:26:37.581075Z
+.......Failed qa: 1989-06-02T15:38:26.345566Z
+.......Failed qa: 1989-06-18T15:38:00.511532Z
+Failed qa: 1989-07-04T15:37:46.636034Z
+Failed qa: 1989-07-06T15:25:45.417569Z
+Failed qa: 1989-07-22T15:25:26.547516Z
+.......Failed qa: 1989-08-05T15:37:06.946038Z
+Failed qa: 1989-08-07T15:24:54.4980630Z
+.......Failed qa: 1989-08-21T15:36:44.648040Z
+Failed qa: 1989-08-23T15:24:44.641585Z
+.......Failed qa: 1989-09-06T15:36:23.559057Z
+Failed qa: 1989-09-08T15:24:09.5390380Z
+Failed qa: 1989-09-15T15:29:36.5000000Z
+Failed qa: 1989-09-22T15:36:05.9310880Z
+Failed qa: 1989-09-24T15:23:56.479022Z
+.......Failed qa: 1989-10-08T15:35:52.6040440Z
+Failed qa: 1989-10-10T15:23:36.840081Z
+Failed qa: 1989-10-24T15:34:58.078088Z
+Failed qa: 1989-10-26T15:22:56.027525Z
+.......Failed qa: 1989-11-09T15:34:50.6090060Z
+Failed qa: 1989-11-11T15:22:35.372025Z
+.......Data has been pickled and saved to '/efs/timesync/1989/audit/1989_2872_1211_qa_rejects.p'.
+Success tracking goes here

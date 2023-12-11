@@ -1,0 +1,44 @@
+{'project_id': '1211', 'year': '1989', 'x': -1957590, 'y': 2206380, 'plot_id': '1585', 'strata': '41'}
+Pandas(Index=0, project_id='1211', plot_id='1585', x=-1957590, y=2206380)
+called process_plot
+Pandas(Index=0, project_id='1211', plot_id='1585', x=-1957590, y=2206380)
+1585
+Directory '/efs/timesync/1989/audit/' already exists.
+Data has been pickled and saved to '/efs/timesync/1989/audit/1989_1585_1211.p'.
+.......Failed qa: 1989-01-19T17:56:43.6450940Z
+Failed qa: 1989-01-24T18:14:49.6060440Z
+Failed qa: 1989-01-26T18:02:40.532060Z
+..............Failed qa: 1989-02-27T18:02:32.016534Z
+.......Failed qa: 1989-03-15T18:01:59.397060Z
+.......Failed qa: 1989-03-24T17:55:39.9520190Z
+Failed qa: 1989-03-31T18:01:55.7350810Z
+Failed qa: 1989-04-09T17:55:53.4530810Z
+Failed qa: 1989-04-16T18:01:45.536525Z
+.......Failed qa: 1989-04-25T17:55:34.4380500Z
+Failed qa: 1989-05-02T18:01:29.649566Z
+.......Failed qa: 1989-05-11T17:55:20.4640500Z
+.......Failed qa: 1989-05-26T18:06:08.126559Z
+Failed qa: 1989-05-27T17:55:05.4150000Z
+Failed qa: 1989-06-03T18:00:58.012532Z
+.......Failed qa: 1989-06-12T17:54:43.6610750Z
+Failed qa: 1989-06-19T18:00:32.297535Z
+Failed qa: 1989-06-28T17:54:27.8000060Z
+Failed qa: 1989-07-05T18:00:17.559044Z
+Failed qa: 1989-07-14T17:54:07.9240380Z
+Failed qa: 1989-07-21T17:59:57.853547Z
+.......Failed qa: 1989-07-29T18:06:13.402084Z
+Failed qa: 1989-07-30T17:53:48.9780810Z
+Failed qa: 1989-08-06T17:59:38.258544Z
+.......Failed qa: 1989-08-14T18:06:12.101547Z
+Failed qa: 1989-08-15T17:53:25.4350940Z
+Failed qa: 1989-08-22T17:59:16.184035Z
+.......Failed qa: 1989-08-31T17:53:06.0180190Z
+Failed qa: 1989-09-07T17:58:54.062035Z
+Failed qa: 1989-09-16T17:52:33.0240500Z
+Failed qa: 1989-09-23T17:58:27.006022Z
+.......Failed qa: 1989-10-02T17:52:24.9820130Z
+.......Failed qa: 1989-10-18T17:51:42.7040880Z
+Failed qa: 1989-10-25T17:57:40.6080880Z
+.......Failed qa: 1989-11-10T17:57:20.8110380Z
+.......Data has been pickled and saved to '/efs/timesync/1989/audit/1989_1585_1211_qa_rejects.p'.
+Success tracking goes here

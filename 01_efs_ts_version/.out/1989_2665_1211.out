@@ -1,0 +1,45 @@
+{'project_id': '1211', 'year': '1989', 'x': -1684800, 'y': 1972380, 'plot_id': '2665', 'strata': '41'}
+Pandas(Index=0, project_id='1211', plot_id='2665', x=-1684800, y=1972380)
+called process_plot
+Pandas(Index=0, project_id='1211', plot_id='2665', x=-1684800, y=1972380)
+2665
+Directory '/efs/timesync/1989/audit/' already exists.
+Data has been pickled and saved to '/efs/timesync/1989/audit/1989_2665_1211.p'.
+Failed qa: 1989-01-19T17:56:55.627550Z
+Failed qa: 1989-01-26T18:03:04.496537Z
+.......Failed qa: 1989-02-27T18:02:55.983057Z
+Failed qa: 1989-03-15T18:02:23.365072Z
+..............Failed qa: 1989-03-31T18:02:07.648081Z
+.......Failed qa: 1989-04-09T17:56:05.366581Z
+Failed qa: 1989-04-16T18:02:09.507537Z
+.......Failed qa: 1989-04-25T17:55:46.424040Z
+Failed qa: 1989-05-02T18:01:53.622056Z
+.......Failed qa: 1989-05-11T17:55:20.4640500Z
+.......Failed qa: 1989-05-26T18:06:32.096082Z
+Failed qa: 1989-05-27T17:55:17.401547Z
+Failed qa: 1989-06-03T18:01:21.987515Z
+.......Failed qa: 1989-06-12T17:54:55.649059Z
+.......Failed qa: 1989-06-19T18:00:56.274012Z
+.......Failed qa: 1989-06-28T17:54:39.788525Z
+.......Failed qa: 1989-07-05T18:00:41.465025Z
+.......Failed qa: 1989-07-14T17:54:19.841063Z
+.......Failed qa: 1989-07-21T18:00:21.832550Z
+.......Failed qa: 1989-07-29T18:06:37.372078Z
+Failed qa: 1989-07-30T17:54:00.968085Z
+.......Failed qa: 1989-08-06T18:00:02.167537Z
+.......Failed qa: 1989-08-14T18:06:36.071091Z
+Failed qa: 1989-08-15T17:53:37.426547Z
+.......Failed qa: 1989-08-22T17:59:40.166553Z
+.......Failed qa: 1989-08-31T17:53:18.009547Z
+Failed qa: 1989-09-07T17:59:17.974069Z
+.......Failed qa: 1989-09-16T17:52:45.016550Z
+Failed qa: 1989-09-23T17:58:50.992013Z
+.......Failed qa: 1989-10-02T17:52:36.903531Z
+.......Failed qa: 1989-10-18T17:51:54.626588Z
+Failed qa: 1989-10-25T17:57:52.531072Z
+Failed qa: 1989-10-27T17:45:17.1210500Z
+Failed qa: 1989-11-10T17:57:32.734519Z
+Failed qa: 1989-11-19T17:51:08.9580940Z
+Failed qa: 1989-11-26T17:57:16.6200810Z
+Data has been pickled and saved to '/efs/timesync/1989/audit/1989_2665_1211_qa_rejects.p'.
+Success tracking goes here

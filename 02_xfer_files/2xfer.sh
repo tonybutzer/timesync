@@ -1,18 +1,17 @@
 #! /bin/bash
 
-#rs='rsync -avz -e ssh -- -J ec2-user@10.12.70.113' 
+start_y='1985'
+end_y='1986'
 
-dest='butzer@tallgrass.cr.usgs.gov:/caldera/projects/usgs/water/impd/butzer/timesync/1984/'
+for ((year=start_y; year<=end_y; year++)); do {
+	dest="butzer@tallgrass.cr.usgs.gov:/caldera/projects/usgs/water/impd/butzer/timesync/${year}/"
 
-srccsv='/efs/timesync/1984/'
+	srccsv="/efs/timesync/${year}/"
 
-#$rs $srccsv $dest
-
-#rsync -azv -e 'ssh -J ec2-user@10.12.70.113' --exclude tc --exclude b743 --exclude b432 $srccsv $dest
-#rsync -azv -e 'ssh -J ec2-user@10.12.70.113' --exclude tc --exclude b743 --exclude b432 $srccsv $dest
-
-
-rsync -azv -e 'ssh -J ec2-user@10.12.70.113' $srccsv $dest
+	# run it twice to catch any simple errors
+	rsync -azv -e 'ssh -J ec2-user@10.12.71.52' $srccsv $dest
+	rsync -azv -e 'ssh -J ec2-user@10.12.71.52' $srccsv $dest
+} done
 
 
 

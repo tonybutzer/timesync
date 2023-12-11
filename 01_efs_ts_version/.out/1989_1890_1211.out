@@ -1,0 +1,51 @@
+{'project_id': '1211', 'year': '1989', 'x': 96330, 'y': 2573670, 'plot_id': '1890', 'strata': '41'}
+Pandas(Index=0, project_id='1211', plot_id='1890', x=96330, y=2573670)
+called process_plot
+Pandas(Index=0, project_id='1211', plot_id='1890', x=96330, y=2573670)
+1890
+Directory '/efs/timesync/1989/audit/' already exists.
+Data has been pickled and saved to '/efs/timesync/1989/audit/1989_1890_1211.p'.
+Failed qa: 1989-01-15T16:41:06.0580810Z
+.......Failed qa: 1989-02-02T16:28:39.7270380Z
+.......Failed qa: 1989-02-16T16:40:33.9590380Z
+Failed qa: 1989-02-18T16:28:35.2260000Z
+Failed qa: 1989-02-23T16:46:38.3150940Z
+Failed qa: 1989-03-04T16:40:40.5970750Z
+Failed qa: 1989-03-06T16:28:15.3210000Z
+Failed qa: 1989-03-20T16:39:48.871516Z
+Failed qa: 1989-04-05T16:39:54.763532Z
+Failed qa: 1989-04-07T16:27:46.1670750Z
+Failed qa: 1989-04-12T16:45:53.7870440Z
+Failed qa: 1989-04-20T16:50:10.601526Z
+Failed qa: 1989-04-21T16:39:40.429006Z
+Failed qa: 1989-04-23T16:27:29.4880250Z
+Failed qa: 1989-04-28T16:45:33.6810250Z
+.......Failed qa: 1989-05-07T16:39:29.585050Z
+Failed qa: 1989-05-09T16:27:16.9330940Z
+Failed qa: 1989-05-14T16:45:17.9710000Z
+.......Failed qa: 1989-05-23T16:39:10.739035Z
+Failed qa: 1989-05-30T16:45:04.7760750Z
+Failed qa: 1989-06-10T16:26:41.5620810Z
+.......Failed qa: 1989-06-24T16:38:32.555516Z
+Failed qa: 1989-06-26T16:26:22.0860130Z
+Failed qa: 1989-07-01T16:44:26.5920690Z
+.......Failed qa: 1989-07-10T16:38:15.871040Z
+Failed qa: 1989-07-17T16:44:06.0620310Z
+.......Failed qa: 1989-07-26T16:37:56.764550Z
+.......Failed qa: 1989-07-28T16:25:44.6120810Z
+Failed qa: 1989-08-02T16:43:46.2690310Z
+.......Failed qa: 1989-08-11T16:37:34.613044Z
+.......Failed qa: 1989-08-13T16:25:21.9390060Z
+Failed qa: 1989-08-18T16:43:22.1290630Z
+Failed qa: 1989-08-27T16:37:14.505009Z
+..............Failed qa: 1989-09-12T16:36:43.672047Z
+Failed qa: 1989-09-14T16:24:26.3550630Z
+Failed qa: 1989-09-19T16:42:32.0590500Z
+Failed qa: 1989-09-30T16:24:19.5350000Z
+Failed qa: 1989-10-07T16:29:56.9830630Z
+Failed qa: 1989-10-14T16:35:58.401509Z
+Failed qa: 1989-10-21T16:41:39.0030380Z
+.......Failed qa: 1989-11-06T16:41:22.4360630Z
+Failed qa: 1989-11-15T16:34:44.6460130Z
+Data has been pickled and saved to '/efs/timesync/1989/audit/1989_1890_1211_qa_rejects.p'.
+Success tracking goes here

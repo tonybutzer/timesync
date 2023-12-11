@@ -1,0 +1,44 @@
+{'project_id': '1211', 'year': '1989', 'x': 1464510, 'y': 696750, 'plot_id': '710', 'strata': '41'}
+Pandas(Index=0, project_id='1211', plot_id='710', x=1464510, y=696750)
+called process_plot
+Pandas(Index=0, project_id='1211', plot_id='710', x=1464510, y=696750)
+710
+Directory '/efs/timesync/1989/audit/' already exists.
+Data has been pickled and saved to '/efs/timesync/1989/audit/1989_0710_1211.p'.
+.......Failed qa: 1989-01-11T15:32:00.072072Z
+Failed qa: 1989-01-13T15:19:46.9190060Z
+.......Failed qa: 1989-01-27T15:31:46.232047Z
+Failed qa: 1989-01-29T15:19:26.542060Z
+.......Failed qa: 1989-02-12T15:31:48.220029Z
+Failed qa: 1989-02-14T15:19:26.336044Z
+.......Failed qa: 1989-02-28T15:31:35.497538Z
+Failed qa: 1989-03-02T15:19:22.6730940Z
+Failed qa: 1989-03-09T15:25:19.9830880Z
+Failed qa: 1989-03-16T15:30:58.440040Z
+.......Failed qa: 1989-04-03T15:18:43.1690750Z
+Failed qa: 1989-04-17T15:30:48.349069Z
+Failed qa: 1989-04-19T15:18:22.444069Z
+.......Failed qa: 1989-05-05T15:18:10.761581Z
+.......Failed qa: 1989-05-19T15:30:12.698010Z
+Failed qa: 1989-05-21T15:17:50.747028Z
+.......Failed qa: 1989-06-04T15:30:01.541535Z
+Failed qa: 1989-06-06T15:17:37.222056Z
+.......Failed qa: 1989-06-20T15:29:36.124509Z
+Failed qa: 1989-06-22T15:17:11.534528Z
+.......Failed qa: 1989-07-06T15:29:20.357012Z
+Failed qa: 1989-07-08T15:16:57.034562Z
+Failed qa: 1989-07-22T15:29:01.571538Z
+Failed qa: 1989-07-24T15:16:38.013069Z
+.......Failed qa: 1989-08-07T15:28:41.456019Z
+Failed qa: 1989-08-09T15:16:16.513541Z
+.......Failed qa: 1989-08-23T15:28:19.699531Z
+.......Failed qa: 1989-09-08T15:27:56.600559Z
+Failed qa: 1989-09-10T15:15:41.5600380Z
+.......Failed qa: 1989-09-24T15:27:31.708559Z
+.......Failed qa: 1989-10-10T15:27:00.0200560Z
+Failed qa: 1989-10-19T15:20:43.5640750Z
+Failed qa: 1989-10-26T15:26:19.0760500Z
+Failed qa: 1989-11-11T15:26:10.280562Z
+Failed qa: 1989-11-13T15:13:53.4680750Z
+.......Data has been pickled and saved to '/efs/timesync/1989/audit/1989_0710_1211_qa_rejects.p'.
+Success tracking goes here
