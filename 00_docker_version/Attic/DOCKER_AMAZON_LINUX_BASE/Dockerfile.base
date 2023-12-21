@@ -1,0 +1,7 @@
+from al2-mambaforge
+
+env tony 1.0
+workdir /home
+copy environment.yml /home
+run mamba env update -n base --file environment.yml
+

@@ -1,0 +1,34 @@
+name: ts2023
+channels:
+  - conda-forge
+dependencies:
+  - python=3
+#jupyter
+#xarray-related
+  - rioxarray
+  - zarr
+#other 
+  - fsspec
+  - s3fs
+  - folium
+#aws
+  - boto3
+  - awscli
+# gaass-py
+  - pandas
+  - numpy
+  - rasterio
+  - matplotlib
+  - geopandas
+  - tqdm
+  - geojson
+# stac VERSIONS are Important Here - bummer!
+  - pystac
+  - pystac-client
+# CPU
+  - pip
+  - pip:
+    - loguru
+    - python-dotenv
+
+
