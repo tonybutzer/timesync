@@ -4,6 +4,7 @@
 # Python AWS and GDAL BS
 import sys, traceback
 import os
+import pickle
 import boto3
 
 os.environ['AWS_REQUEST_PAYER'] = 'requester'
@@ -32,6 +33,26 @@ def create_directory(directory_path):
         print(f"Directory '{directory_path}' created.")
     else:
         print(f"Directory '{directory_path}' already exists.")
+
+
+def pickle_to_efs(the_object, filename):
+    pickle_file_path = filename
+    with open(pickle_file_path, 'wb') as pickle_file:
+        pickle.dump(the_object, pickle_file)
+
+    print(f"Data has been pickled and saved to '{pickle_file_path}'.")
+
+
+def pickle_the_outputs(year, plot, the_outputs):
+    print(plot)
+    print(plot.plot_id)
+
+    number_str = str(plot.plot_id).zfill(4)
+    fn = f'/efs/timesync/{year}/audit/{year}_{number_str}_{plot.project_id}_outputs.p'
+    dirn = f'/efs/timesync/{year}/audit/'
+    create_directory(dirn)
+    pickle_to_efs(the_outputs,fn)
+
 
 
 
@@ -74,9 +95,10 @@ def process_on_local(project_dir, project_id, plot_id, region, chip_size, year, 
     for plot in plots_df.itertuples():
         print(plot)
         process_plot(year, plot, params)
-        #save_qa_rejects(year, plot)
+        # save_qa_rejects(year, plot)
         the_outputs = get_the_outputs_list()
-        print(the_outputs)
+        # print(the_outputs)
+        pickle_the_outputs(year, plot, the_outputs)
         print('\nSuccess tracking goes here')
   
 def PrintException():

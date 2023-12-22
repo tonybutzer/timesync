@@ -10,7 +10,7 @@ clean:
 
 
 test3:
-	python3 ts_user.py --year 1998 --plot_id 1 --x -530580 --y 1318380  3132
+	python3 ts_user.py --year 1998 --plot_id 1 --x -530580 --y 1318380  1222
 
 
 
