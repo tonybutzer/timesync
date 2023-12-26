@@ -19,7 +19,7 @@ def get_slurm_text(full_python_cmd, job_name):
 #SBATCH --job-name={lizard}.job
 #SBATCH --output=.out/{lizard}.out
 #SBATCH --error=.out/{lizard}.err
-source /efs/mambaforge/bin/activate city
+source /efs/mambaforge/bin/activate ts2024
 {full_python_cmd}'''
     return slurm_text
 
