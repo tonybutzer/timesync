@@ -8,8 +8,8 @@ clean:
 1984: 
 	./pc_user.py --start_year 1984 --end_year 1984 lcnext_srs5000_final.csv
 
-1988: clean
-	./pc_user.py --start_year 1988 --end_year 1988 lcnext_srs5000_final.csv
+1989: clean
+	./pc_user.py --start_year 1989 --end_year 1989 lcnext_srs5000_final.csv
 
 
 test3:
