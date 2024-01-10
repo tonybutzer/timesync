@@ -1,7 +1,20 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-my_year = '1985'
+
+import sys
+
+# Check if at least one argument is provided
+if len(sys.argv) < 2:
+    print("Usage: python script.py <year>")
+    sys.exit(1)
+
+# Fetch the first argument and assign it to the variable my_year
+my_year = int(sys.argv[1])
+
+# Now you can use my_year in your script
+print("The year is:", my_year)
+
 
 
 #! ls /efs/timesync/1984/audit
@@ -35,7 +48,7 @@ directory_path = tall_path
 
 
 orig_path = '/efs/'
-tall_replace = '/caldera/projects/usgs/water/impd/butzer'
+tall_replace = '/caldera/projects/usgs/water/impd/butzer/'
 
 # Call the function with the specified directory path
 files_in_directory = list_files_in_directory(directory_path)
