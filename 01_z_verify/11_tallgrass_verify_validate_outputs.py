@@ -66,6 +66,7 @@ def unpickle_object(file_path):
 import os
 
 def verify_csv_file(file_path):
+    file_path = file_path.replace(orig_path, tall_replace)
     try:
         # Check if the file exists
         if not os.path.exists(file_path):
@@ -85,7 +86,7 @@ def verify_csv_file(file_path):
         return False
 
 def verify_png_file(file_path):
-    file_path = file_path.replace()
+    file_path = file_path.replace(orig_path, tall_replace)
     try:
         # Check if the file exists
         if not os.path.exists(file_path):

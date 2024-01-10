@@ -91,7 +91,7 @@ logger.add("0_run_decade.log", level="INFO", rotation="1 day", retention="7 days
 
 clean()
 
-for year in range(1987, 1990):
+for year in range(1995, 1999+1):
     print(year)
     cmd = f'./pc_user.py --start_year {year} --end_year {year} lcnext_srs5000_final.csv'
     os.system(cmd)

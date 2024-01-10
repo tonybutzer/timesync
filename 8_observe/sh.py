@@ -32,7 +32,7 @@ def display_state_counts(df):
 
 def main():
     # Run squeue command and get the output
-    squeue_output, _ = run_command('squeue')
+    squeue_output, _ = run_command('squeue --format="%14i %19P %14j %8u %2t %7M %5D %R"')
 
     # Parse squeue output into a DataFrame
     df = parse_squeue_output(squeue_output)
