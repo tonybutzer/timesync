@@ -1,7 +1,7 @@
 #! /bin/bash
 
-start_y='2003'
-end_y='2003'
+start_y='2004'
+end_y='2004'
 
 for ((year=start_y; year<=end_y; year++)); do {
 	#dest="butzer@tallgrass.cr.usgs.gov:/caldera/projects/usgs/water/impd/butzer/timesync/${year}/"
