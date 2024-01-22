@@ -16,3 +16,6 @@ Stages
     - prune the csv head 10
 5. head towards docker
 6. document or dumb down the code that has magic or advanced concepts
+
+
+# move files to the right dir structure 1-25-2023
