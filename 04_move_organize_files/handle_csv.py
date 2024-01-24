@@ -14,7 +14,7 @@ print (sys.argv[1])
 
 my_year = sys.argv[1]
 
-SRC_DIR = f'/data/lcmap/www/storages/00_from_cloud_test/timesync/{my_year}/prj_1211'
+SRC_DIR = f'/data/lcmap/www/storages/00_from_cloud_headnode/timesync/{my_year}/prj_1211'
 
 DEST_DIR = '/data/lcmap/www/storages/prj_202301'
 
@@ -41,10 +41,10 @@ for i in tqdm(range(0,len(csv_files))):
     #print(".",flush=True, end="")
 
 # Write the concatenated DataFrame to a new CSV file
-concatenated_df.insert(0,'big_project_id', 'prj_202312')
+concatenated_df.insert(0,'project_id1', '202301')
 output_csv_path = f'{DEST_DIR}/{my_year}_prj_202301_region_spectrals.csv'
 
 sorted_df = concatenated_df.sort_values(by=['plot_id', 'doy'])
-sorted_df.to_csv(output_csv_path, index=False)
+sorted_df.to_csv(output_csv_path, index=False, header=False)
 
 print(f"Concatenated data written to {output_csv_path}")
