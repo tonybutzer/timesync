@@ -55,7 +55,7 @@ def output_files(project_dir: str, project_id: str, plot_id: str, year_doy: str)
     Build the file names for the output files for TimeSync
     """
     return {
-        'scsv': os.path.join(project_dir, f'prj_{project_id}/{plot_id}_spectral_files_set_{year_doy}.csv'),
+        'scsv': os.path.join(project_dir, f'prj_{project_id}/csv/{plot_id}_spectral_files_set_{year_doy}.csv'),
         'tcap': os.path.join(project_dir, f'prj_{project_id}/tc/plot_{plot_id}/plot_{plot_id}_{year_doy}.png'),
         'b743': os.path.join(project_dir, f'prj_{project_id}/b743/plot_{plot_id}/plot_{plot_id}_{year_doy}.png'),
         'b432': os.path.join(project_dir, f'prj_{project_id}/b432/plot_{plot_id}/plot_{plot_id}_{year_doy}.png')}
