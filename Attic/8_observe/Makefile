@@ -1,0 +1,2 @@
+wat:
+	watch ./sh.py

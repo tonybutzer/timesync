@@ -12,16 +12,9 @@ def run_command(command):
 
 def parse_squeue_output(output):
     # Assuming squeue output format: JOBID, PARTITION, NAME, USER, STATE, TIME, NODES, CPUS
-    data=[]
     lines = output.strip().split('\n')
     headers = lines[0].split()
-    for line in lines[1:]:
-        l_arr = line.split()
-        if (len(l_arr) > 8):
-            pass
-        else:
-            data.append(l_arr)
-    #data = [line.split() for line in lines[1:]]
+    data = [line.split() for line in lines[1:]]
     df = pd.DataFrame(data, columns=headers)
     return df
 
@@ -39,7 +32,8 @@ def display_state_counts(df):
 
 def main():
     # Run squeue command and get the output
-    squeue_output, _ = run_command('squeue --format="%14i %19P %14j %8u %2t %7M %5D %R"')
+    #squeue_output, _ = run_command('squeue --format="%14i %19P %14j %8u %2t %7M %5D %R"')
+    squeue_output, _ = run_command('squeue')
 
     # Parse squeue output into a DataFrame
     df = parse_squeue_output(squeue_output)
@@ -47,10 +41,10 @@ def main():
     filtered_df = df[df['ST'] == 'R']
 
     # Display the DataFrame nicely on the terminal
-    display_dataframe(filtered_df.head())
+    #display_dataframe(filtered_df.head())
 
     # Display state counts
-    display_state_counts(df)
+    #display_state_counts(df)
 
 if __name__ == "__main__":
     main()

@@ -5,8 +5,11 @@ clean:
 	rm .out/*
 	rm .job/*
 
-2010: 
-	./pc_user.py --start_year 2010 --end_year 2010 lcnext_srs5000_final.csv
+1993: 
+	./pc_user.py --start_year 1993 --end_year 1993 lcnext_srs5000_final.csv
+
+1987: 
+	./pc_user.py --start_year 1987 --end_year 1987 lcnext_srs5000_final.csv
 
 1989: clean
 	./pc_user.py --start_year 1989 --end_year 1989 lcnext_srs5000_final.csv
