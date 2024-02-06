@@ -38,6 +38,7 @@ dependencies:
   #- odc-stac
 # gaass-py
   - pandas
+  - pyarrow
   - numpy
   - rasterio
   - matplotlib
